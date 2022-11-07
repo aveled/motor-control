@@ -1,49 +1,88 @@
-# Motoris Backend
+<p align="center">
+    <a target="_blank" href="https://aveled.com">
+        <img src="https://raw.githubusercontent.com/aveled/motor-control/master/about/identity/motor-control.png" height="250px">
+    </a>
+    <br />
+    <br />
+    <a target="_blank" href="https://github.com/aveled/motor-control/blob/master/LICENSE">
+        <img src="https://img.shields.io/badge/license-DEL-blue.svg?colorB=1380C3&style=for-the-badge" alt="License: DEL">
+    </a>
+</p>
 
 
-## Configuration
+
+<h1 align="center">
+    motor control
+</h1>
+
+
+<h3 align="center">
+    Control Motors from Web API/Application
+</h3>
+
+
+
+### Contents
+
++ [About](#about)
++ [Backend](#backend)
++ [Frontend](#frontend)
++ [Packages](#packages)
++ [Codeophon](#codeophon)
+
+
+
+## About
+
+
+
+## Backend
+
+### Configuration
 
 ``` typescript
-import Motoris from '@aveled/motoris-backend';
+import MotorControl from '@aveled/motor-control-frontend';
 
-const motoris = new Motoris({
+
+new MotorControl({
     motors: {
         one: {
-            // default: true,
-            // connection: 'modbus',
-            poles: 4,
+            poles: 2,
             registers: {
-                READ_STATE: 20,
-                READ_FREQUENCY: 21,
-                STARTSTOP: 16,
-                WRITE_FREQUENCY: 17,
+                start: 16,
+                stop: 16,
+                reverse: 16,
+                readFrequency: 21,
+                writeFrequency: 17,
             },
             values: {
                 start: 3,
-                reverse: 6,
                 stop: 0,
+                reverse: 6,
                 frequency: 400,
             },
-            hooks: {
-                frequencyRead: (value) => value,
-                frequencyWrite: (value) => value,
-            },
+            directions: true,
         },
     },
     connections: {
         modbus: {
-            // default: true,
-            type: 'modbus',
-            ip: '192.168.0.99',
+            type: 'modbusTCP',
+            ip: '192.168.100.97',
             port: 502,
             id: 1,
         },
+    },
+    frontend: {
+        title: '',
+        favicon: '',
+        pageTitle: '',
+        pageIcon: '',
     },
 });
 ```
 
 
-## Endpoints
+### Endpoints
 
 ```
 /start
@@ -156,3 +195,48 @@ parameters {
     token?: string
 }
 ```
+
+
+
+## Frontend
+
+### Configuration
+
+``` typescript
+import generateServer from '@aveled/motor-control-frontend';
+
+
+const configuration = {
+    endpoint: 'http://192.168.100.98:34500',
+};
+
+generateServer(configuration);
+```
+
+
+
+## Packages
+
+<a target="_blank" href="https://www.npmjs.com/package/@aveled/motor-control-backend">
+    <img src="https://img.shields.io/npm/v/@aveled/motor-control-backend.svg?logo=npm&colorB=1380C3&style=for-the-badge" alt="Version">
+</a>
+
+[@aveled/motor-control-backend][motor-control-backend] • the backend server
+
+[motor-control-backend]: https://github.com/aveled/motor-control/tree/master/packages/backend
+
+
+<a target="_blank" href="https://www.npmjs.com/package/@aveled/motor-control-frontend">
+    <img src="https://img.shields.io/npm/v/@aveled/motor-control-frontend.svg?logo=npm&colorB=1380C3&style=for-the-badge" alt="Version">
+</a>
+
+[@aveled/motor-control-frontend][motor-control-frontend] • the frontend server
+
+[motor-control-frontend]: https://github.com/aveled/motor-control/tree/master/packages/frontend
+
+
+
+## [Codeophon](https://github.com/ly3xqhl8g9/codeophon)
+
++ licensing: [delicense](https://github.com/ly3xqhl8g9/delicense)
++ versioning: [αver](https://github.com/ly3xqhl8g9/alpha-versioning)

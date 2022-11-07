@@ -1,6 +1,6 @@
 <p align="center">
     <a target="_blank" href="https://aveled.com">
-        <img src="https://raw.githubusercontent.com/aveled/motor-control/master/about/identity/motor-control-logo.png" height="250px">
+        <img src="https://raw.githubusercontent.com/aveled/motor-control/master/about/identity/motor-control.png" height="250px">
     </a>
     <br />
     <br />
@@ -38,9 +38,180 @@
 
 ## Backend
 
+### Configuration
+
+``` typescript
+import MotorControl from '@aveled/motor-control-frontend';
+
+
+new MotorControl({
+    motors: {
+        one: {
+            poles: 2,
+            registers: {
+                start: 16,
+                stop: 16,
+                reverse: 16,
+                readFrequency: 21,
+                writeFrequency: 17,
+            },
+            values: {
+                start: 3,
+                stop: 0,
+                reverse: 6,
+                frequency: 400,
+            },
+            directions: true,
+        },
+    },
+    connections: {
+        modbus: {
+            type: 'modbusTCP',
+            ip: '192.168.100.97',
+            port: 502,
+            id: 1,
+        },
+    },
+    frontend: {
+        title: '',
+        favicon: '',
+        pageTitle: '',
+        pageIcon: '',
+    },
+});
+```
+
+
+### Endpoints
+
+```
+/start
+
+POST - starts the motor
+parameters {
+    token?: string
+    motor?: string
+    duration?: number
+}
+```
+
+```
+/stop
+
+POST - stops the motor
+parameters {
+    token?: string
+    motor?: string
+}
+```
+
+```
+/reverse
+
+POST - reverses the motor
+parameters {
+    token?: string
+    motor?: string
+    duration?: number
+}
+```
+
+```
+/left
+
+POST - rotates left the motor
+parameters {
+    token?: string
+    motor?: string
+    duration?: number
+}
+```
+
+```
+/right
+
+POST - rotates right the motor
+parameters {
+    token?: string
+    motor?: string
+    duration?: number
+}
+```
+
+```
+/frequency
+
+GET - gets the frequency of the motor
+parameters {
+    token?: string
+    motor?: string
+}
+
+POST - sets the frequency of the motor
+parameters {
+    token?: string
+    motor?: string
+}
+```
+
+```
+/rpm
+
+GET - gets the rotations per minute of the motor
+parameters {
+    token?: string
+    motor?: string
+}
+
+POST - sets the rotations per minute of the motor
+parameters {
+    token?: string
+    motor?: string
+}
+```
+
+```
+/status
+
+GET - gets the status of the motor
+parameters {
+    token?: string
+    motor?: string
+}
+response {
+    error: number
+    running: boolean
+    frequency: number
+    rpm: number
+    direction: 'left' | 'right' | 'unknown'
+}
+```
+
+```
+/restart
+
+POST - restart server
+parameters {
+    token?: string
+}
+```
+
 
 
 ## Frontend
+
+### Configuration
+
+``` typescript
+import generateServer from '@aveled/motor-control-frontend';
+
+
+const configuration = {
+    endpoint: 'http://192.168.100.98:34500',
+};
+
+generateServer(configuration);
+```
 
 
 
