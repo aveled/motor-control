@@ -4,6 +4,8 @@
 
     import fetch from 'cross-fetch';
 
+    import themes from '@plurid/plurid-themes';
+
     import {
         PluridPreserve,
         PluridRouteMatch,
@@ -64,6 +66,12 @@ const preserves = (
                 motors,
             } = await getConfiguration(configuration.endpoint);
 
+            const stateThemes = meta.theme
+                ? {
+                    general: themes[meta.theme],
+                    interaction: themes[meta.theme],
+                } : undefined;
+
             const store = reduxStore({
                 general: {
                     notFoundFace: getRandomFace(),
@@ -73,6 +81,7 @@ const preserves = (
                     meta,
                     motors,
                 },
+                themes: stateThemes,
             });
 
             return {
