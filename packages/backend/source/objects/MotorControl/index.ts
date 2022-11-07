@@ -661,15 +661,33 @@ class MotorControl {
                     const [motorID, motorData] = motor;
 
                     const {
+                        frequencyRange: frequencyRangeData,
+                        registers,
+                    } = motorData;
+
+                    const {
                         reverse,
                         readFrequency,
                         writeFrequency,
-                    } = motorData.registers;
+                    } = registers;
+
+                    function range(
+                        start: number,
+                        end: number,
+                        step = 1,
+                    ) {
+                        const length = Math.floor((end - start) / step) + 1;
+                        return Array(length).fill(0).map((_, index) => start + (index * step))
+                    }
+                    const frequencyRange = frequencyRangeData
+                        ? range(frequencyRangeData.start, frequencyRangeData.end, frequencyRangeData.step)
+                        : undefined;
 
                     return {
                         id: motorID,
                         reverse: typeof reverse === 'number',
                         frequency: typeof writeFrequency === 'number' && typeof readFrequency === 'number',
+                        frequencyRange,
                         directions: !motorData.directions
                             ? false
                             : typeof motorData.directions === 'boolean'
