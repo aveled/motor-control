@@ -29,7 +29,12 @@
 
     import {
         SELECT_MOTOR,
+        languages,
     } from '~kernel-data/constants';
+
+    import {
+        Language,
+    } from '~kernel-data/interfaces';
 
     import {
         getStatus,
@@ -76,6 +81,7 @@ export interface MotorStateProperties {
     stateInteractionTheme: Theme;
     stateConfigurationEndpoint: string;
     stateConfigurationMotors: MotorisMergedConfiguration['motors'];
+    stateConfigurationLanguage: Language;
 }
 
 export interface MotorDispatchProperties {
@@ -101,6 +107,7 @@ const Motor: React.FC<MotorProperties> = (
         // stateInteractionTheme,
         stateConfigurationEndpoint,
         stateConfigurationMotors,
+        stateConfigurationLanguage,
         // #endregion state
     } = properties;
 
@@ -272,7 +279,7 @@ const Motor: React.FC<MotorProperties> = (
 
     const MotorStart = (
         <StyledPluridPureButton
-            text="START"
+            text={languages[stateConfigurationLanguage].start}
             atClick={() => {
                 startMotor(stateConfigurationEndpoint);
                 load();
@@ -286,7 +293,7 @@ const Motor: React.FC<MotorProperties> = (
 
     const MotorStop = (
         <StyledPluridPureButton
-            text="STOP"
+            text={languages[stateConfigurationLanguage].stop}
             atClick={() => {
                 stopMotor(stateConfigurationEndpoint);
                 load();
@@ -303,7 +310,7 @@ const Motor: React.FC<MotorProperties> = (
 
     const MotorReverse = motor.reverse ? (
         <StyledPluridPureButton
-            text={'reverse'}
+            text={languages[stateConfigurationLanguage].reverse}
             atClick={() => {
                 reverseMotor(stateConfigurationEndpoint);
                 load();
@@ -323,7 +330,7 @@ const Motor: React.FC<MotorProperties> = (
     const MotorDirections = motor.directions ? (
         <StyledLeftRight>
             <StyledPluridPureButton
-                text="ᐊ left"
+                text={`ᐊ ${languages[stateConfigurationLanguage].left}`}
                 atClick={() => {
                     setShortStateChange(true);
                     spinLeft(stateConfigurationEndpoint);
@@ -332,7 +339,7 @@ const Motor: React.FC<MotorProperties> = (
             />
 
             <StyledPluridPureButton
-                text="right ᐅ"
+                text={`${languages[stateConfigurationLanguage].right} ᐅ`}
                 atClick={() => {
                     setShortStateChange(true);
                     spinRight(stateConfigurationEndpoint);
@@ -346,10 +353,10 @@ const Motor: React.FC<MotorProperties> = (
         <StyledLeftRight>
             <StyledText
                 style={{
-                    fontSize: '1.4rem',
+                    fontSize: '1.3rem',
                 }}
             >
-                speed
+                {languages[stateConfigurationLanguage].speed}
             </StyledText>
 
             <PluridSlider
@@ -396,6 +403,7 @@ const mapStateToProperties = (
     stateInteractionTheme: selectors.themes.getInteractionTheme(state),
     stateConfigurationEndpoint: selectors.configuration.getConfiguration(state).endpoint,
     stateConfigurationMotors: selectors.configuration.getConfiguration(state).motors,
+    stateConfigurationLanguage: selectors.configuration.getConfiguration(state).meta?.language || 'english',
 });
 
 

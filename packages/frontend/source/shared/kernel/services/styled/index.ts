@@ -37,7 +37,7 @@ const {
 
 
 export const StyledPluridPureButton = styled(PluridPureButton)`
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     padding: 1.4rem;
     margin: 0.5rem 0;
     border-radius: 2rem;

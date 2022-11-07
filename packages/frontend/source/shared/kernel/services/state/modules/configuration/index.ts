@@ -2,6 +2,7 @@
     // #region libraries
     import {
         createSlice,
+        PayloadAction,
     } from '@reduxjs/toolkit';
     // #endregion libraries
 
@@ -10,6 +11,10 @@
     import {
         MotorisMergedConfiguration,
     } from '~shared/data/interfaces';
+
+    import {
+        Language,
+    } from '~kernel-data/interfaces';
 
     import {
         AppState,
@@ -37,6 +42,14 @@ export const factory = (
     name,
     initialState: state,
     reducers: {
+        setLanguage: (
+            state,
+            action: PayloadAction<Language>,
+        ) => {
+            if (state.meta) {
+                state.meta.language = action.payload;
+            }
+        },
     },
 });
 

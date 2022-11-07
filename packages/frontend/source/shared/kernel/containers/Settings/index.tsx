@@ -11,13 +11,26 @@
     } from '@reduxjs/toolkit';
     import { connect } from 'react-redux';
 
+
     import {
         Theme,
     } from '@plurid/plurid-themes';
+
+    // import {
+    //     DispatchAction,
+    // } from '@plurid/plurid-ui-state-react';
     // #endregion libraries
 
 
     // #region external
+    import {
+        languages,
+    } from '~kernel-data/constants';
+
+    import {
+        Language,
+    } from '~kernel-data/interfaces';
+
     import {
         PluridSpinner,
         StyledPluridPureButton,
@@ -28,7 +41,6 @@
 
     import {
         setLanguage as setLanguageLogic,
-        getLanguage,
         setToken as setTokenLogic,
         getToken,
         restartServer,
@@ -37,7 +49,7 @@
     import { AppState } from '~kernel-services/state/store';
     import StateContext from '~kernel-services/state/context';
     import selectors from '~kernel-services/state/selectors';
-    // import actions from '~kernel-services/state/actions';
+    import actions from '~kernel-services/state/actions';
     // #endregion external
 
 
@@ -58,9 +70,12 @@ export interface SettingsStateProperties {
     stateGeneralTheme: Theme;
     stateInteractionTheme: Theme;
     stateConfigurationEndpoint: string;
+    stateConfigurationLanguage: Language;
 }
 
 export interface SettingsDispatchProperties {
+    // dispatchSetLanguage: DispatchAction<typeof actions.configuration.setLanguage>;
+    dispatchSetLanguage: any;
 }
 
 export type SettingsProperties =
@@ -78,7 +93,12 @@ const Settings: React.FC<SettingsProperties> = (
         stateGeneralTheme,
         // stateInteractionTheme,
         stateConfigurationEndpoint,
+        stateConfigurationLanguage,
         // #endregion state
+
+        // #region dispatch
+        dispatchSetLanguage,
+        // #endregion dispatch
     } = properties;
     // #endregion properties
 
@@ -88,11 +108,6 @@ const Settings: React.FC<SettingsProperties> = (
         loading,
         setLoading,
     ] = useState(false);
-
-    const [
-        language,
-        setLanguage,
-    ] = useState('english');
 
     const [
         token,
@@ -115,22 +130,11 @@ const Settings: React.FC<SettingsProperties> = (
 
     // #region effects
     useEffect(() => {
-        const language = getLanguage();
-        if (language) {
-            setLanguage(language);
-        }
-
         const token = getToken();
         if (token) {
             setToken(token);
         }
     }, []);
-
-    useEffect(() => {
-        setLanguageLogic(language);
-    }, [
-        language,
-    ]);
 
     useEffect(() => {
         setTokenLogic(token);
@@ -158,7 +162,7 @@ const Settings: React.FC<SettingsProperties> = (
             theme={stateGeneralTheme}
         >
             <h1>
-                settings
+                {languages[stateConfigurationLanguage].settings}
             </h1>
 
             <PluridFormLeftRight
@@ -169,17 +173,18 @@ const Settings: React.FC<SettingsProperties> = (
                 }}
             >
                 <div>
-                    language
+                    {languages[stateConfigurationLanguage].language}
                 </div>
 
                 <PluridDropdown
-                    selected={language}
+                    selected={stateConfigurationLanguage}
                     selectables={[
-                        'english',
+                        ...Object.keys(languages),
                     ]}
                     atSelect={(selection) => {
                         if (typeof selection === 'string') {
-                            setLanguage(selection);
+                            dispatchSetLanguage(selection);
+                            setLanguageLogic(selection);
                         }
                     }}
                     theme={stateGeneralTheme}
@@ -188,7 +193,7 @@ const Settings: React.FC<SettingsProperties> = (
             </PluridFormLeftRight>
 
             <PluridInputLine
-                name="token"
+                name={languages[stateConfigurationLanguage].token}
                 text={token}
                 atChange={(event) => {
                     setToken(event.target.value);
@@ -197,7 +202,7 @@ const Settings: React.FC<SettingsProperties> = (
             />
 
             <StyledPluridPureButton
-                text={'RESTART'}
+                text={languages[stateConfigurationLanguage].restart}
                 atClick={() => {
                     restart();
                 }}
@@ -218,12 +223,18 @@ const mapStateToProperties = (
     stateGeneralTheme: selectors.themes.getGeneralTheme(state),
     stateInteractionTheme: selectors.themes.getInteractionTheme(state),
     stateConfigurationEndpoint: selectors.configuration.getConfiguration(state).endpoint,
+    stateConfigurationLanguage: selectors.configuration.getConfiguration(state).meta?.language || 'english',
 });
 
 
 const mapDispatchToProperties = (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
 ): SettingsDispatchProperties => ({
+    dispatchSetLanguage: (
+        payload: any,
+    ) => dispatch(
+        actions.configuration.setLanguage(payload),
+    ),
 });
 
 

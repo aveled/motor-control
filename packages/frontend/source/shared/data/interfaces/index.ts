@@ -1,3 +1,13 @@
+// #region imports
+    // #region external
+    import {
+        Language,
+    } from '~kernel-data/interfaces';
+    // #endregion external
+// #endregion imports
+
+
+
 // #region module
 export interface Motor {
     reverse?: boolean;
@@ -15,6 +25,7 @@ export interface MotorisMergedConfiguration {
         favicon?: string;
         pageTitle?: string;
         pageIcon?: string;
+        language?: Language;
     };
     motors: Record<string, Motor>;
 }

@@ -1,6 +1,15 @@
 // #region imports
     // #region libraries
-    import React from 'react';
+    import React, {
+        useEffect,
+    } from 'react';
+
+    import {
+        AnyAction,
+        ThunkDispatch,
+    } from '@reduxjs/toolkit';
+    import { connect } from 'react-redux';
+
 
     import {
         PluridReactComponent,
@@ -9,7 +18,16 @@
 
 
     // #region external
+    import {
+        getLanguage,
+    } from '~kernel-services/logic';
+
     import Toolbar from '~kernel-components/Toolbar';
+
+    import { AppState } from '~kernel-services/state/store';
+    import StateContext from '~kernel-services/state/context';
+    // import selectors from '~kernel-services/state/selectors';
+    import actions from '~kernel-services/state/actions';
     // #endregion external
 
 
@@ -23,9 +41,21 @@
 
 
 // #region module
-export interface ShellProperties {
+export interface ShellOwnProperties {
     children?: React.ReactNode;
 }
+
+export interface ShellStateProperties {
+}
+
+export interface ShellDispatchProperties {
+    dispatchSetLanguage: any;
+}
+
+export type ShellProperties =
+    & ShellOwnProperties
+    & ShellStateProperties
+    & ShellDispatchProperties;
 
 
 const Shell: React.FC<ShellProperties> = (
@@ -34,8 +64,22 @@ const Shell: React.FC<ShellProperties> = (
     // #region properties
     const {
         children,
+
+        // #region dispatch
+        dispatchSetLanguage,
+        // #endregion dispatch
     } = properties;
     // #endregion properties
+
+
+    // #region effects
+    useEffect(() => {
+        const language = getLanguage();
+        if (language) {
+            dispatchSetLanguage(language);
+        }
+    }, []);
+    // #endregion effects
 
 
     // #region render
@@ -52,7 +96,33 @@ const Shell: React.FC<ShellProperties> = (
 }
 
 
-const shell: PluridReactComponent = Shell;
+const mapStateToProperties = (
+    state: AppState,
+): ShellStateProperties => ({
+});
+
+
+const mapDispatchToProperties = (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>,
+): ShellDispatchProperties => ({
+    dispatchSetLanguage: (
+        payload: any,
+    ) => dispatch(
+        actions.configuration.setLanguage(payload),
+    ),
+});
+
+
+const ConnectedShell = connect(
+    mapStateToProperties,
+    mapDispatchToProperties,
+    null,
+    {
+        context: StateContext,
+    },
+)(Shell);
+
+const shell: PluridReactComponent = ConnectedShell;
 // #endregion module
 
 
