@@ -179,7 +179,7 @@ const Settings: React.FC<SettingsProperties> = (
                 <PluridDropdown
                     selected={stateConfigurationLanguage}
                     selectables={[
-                        ...Object.keys(languages),
+                        ...Object.keys(languages).sort(),
                     ]}
                     atSelect={(selection) => {
                         if (typeof selection === 'string') {
