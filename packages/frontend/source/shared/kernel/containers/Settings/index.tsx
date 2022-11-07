@@ -114,9 +114,6 @@ const Settings: React.FC<SettingsProperties> = (
 
 
     // #region effects
-
-
-    // #region effects
     useEffect(() => {
         const language = getLanguage();
         if (language) {
@@ -136,10 +133,7 @@ const Settings: React.FC<SettingsProperties> = (
     ]);
 
     useEffect(() => {
-        if (token === '') {
-            setTokenLogic('');
-            return;
-        }
+        setTokenLogic(token);
     }, [
         token,
     ]);
@@ -170,6 +164,8 @@ const Settings: React.FC<SettingsProperties> = (
             <PluridFormLeftRight
                 style={{
                     marginBottom: '2rem',
+                    fontSize: '0.9rem',
+                    padding: '0 0.8rem',
                 }}
             >
                 <div>
@@ -196,11 +192,6 @@ const Settings: React.FC<SettingsProperties> = (
                 text={token}
                 atChange={(event) => {
                     setToken(event.target.value);
-                }}
-                textline={{
-                    enterAtClick: () => {
-                        setTokenLogic(token);
-                    },
                 }}
                 theme={stateGeneralTheme}
             />
