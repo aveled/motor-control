@@ -1,8 +1,8 @@
-const MotorControl = require('../build').default;
+const MotorControlBackend = require('../build').default;
 
 
 
-new MotorControl({
+MotorControlBackend({
     motors: {
         one: {
             poles: 2,
