@@ -704,12 +704,14 @@ class MotorControl {
                         id,
                         reverse,
                         frequency,
+                        frequencyRange,
                         directions,
                     } = motor;
 
                     motors[id] = {
                         reverse,
                         frequency,
+                        frequencyRange,
                         directions,
                     };
                 }
