@@ -44,6 +44,8 @@ As architecture, the `MotorControl backend` is meant to speak over Modbus, TCP/I
 
 On the SBC, both the backend and the frontend are meant to be run using [`NodeJS`](https://nodejs.org) and [`pm2`](https://pm2.io).
 
+The frontend user interface can be configured from the backend `frontend` configuration field or from the client.
+
 <p align="center">
     <img src="https://raw.githubusercontent.com/aveled/motor-control/master/about/presentation/ui.png" height="500px">
 </p>
