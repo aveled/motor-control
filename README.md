@@ -40,7 +40,7 @@ As architecture, the `MotorControl backend` is meant to speak over Modbus, TCP/I
 
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/aveled/motor-control/master/about/diagrams/architecture.png" height="600px">
+    <img src="https://raw.githubusercontent.com/aveled/motor-control/master/about/diagrams/architecture.png" height="180px">
 </p>
 
 
