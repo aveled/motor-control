@@ -103,11 +103,19 @@ const MotorSelector: React.FC<MotorSelectorProperties> = (
                     : '4rem',
             }}
         >
+            <div
+                style={{
+                    userSelect: 'none',
+                }}
+            >
+                ⚡
+            </div>
+
             <PluridDropdown
+                selected={selectedMotor}
                 selectables={[
                     ...motors.map(motor => motor[0]),
                 ]}
-                selected={selectedMotor}
                 atSelect={(selection) => {
                     if (typeof selection === 'string') {
                         setSelectedMotor(selection);

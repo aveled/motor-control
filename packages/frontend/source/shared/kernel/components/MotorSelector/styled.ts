@@ -16,7 +16,8 @@ export interface IStyledMotorSelector {
 }
 
 export const StyledMotorSelector = styled.div<IStyledMotorSelector>`
-    display: grid;
+    display: flex;
+    gap: 0.5rem;
     place-content: center;
 `;
 // #region module
