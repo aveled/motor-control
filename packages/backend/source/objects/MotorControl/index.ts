@@ -730,6 +730,7 @@ class MotorControl {
                     favicon,
                     pageTitle,
                     pageIcon,
+                    theme,
                 } = this.options.frontend;
 
                 return {
@@ -737,6 +738,7 @@ class MotorControl {
                     favicon,
                     pageTitle,
                     pageIcon,
+                    theme,
                 };
             }
             const meta = unpackMeta();

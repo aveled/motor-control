@@ -88,6 +88,10 @@ export interface MotorControlOptions<C = Record<string, Connection>> {
          * URL or Base64 data image, e.g. `data:image/x-icon;base64,...`
          */
         pageIcon?: string;
+        /**
+         * Plurid Theme name, https://github.com/plurid/plurid-themes#usage
+         */
+        theme?: string;
     };
 }
 // #endregion module
