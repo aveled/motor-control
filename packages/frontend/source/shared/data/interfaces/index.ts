@@ -2,6 +2,7 @@
 export interface Motor {
     reverse?: boolean;
     frequency?: boolean;
+    frequencyRange?: number[];
     directions?: boolean | {
         duration?: number;
     };

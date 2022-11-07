@@ -119,7 +119,6 @@ const Motor: React.FC<MotorProperties> = (
         setLoading,
     ] = useState(true);
 
-
     const [
         spinDirection,
         setSpinDirection,
@@ -148,17 +147,13 @@ const Motor: React.FC<MotorProperties> = (
     // #region handlers
     const changeFrequency = useDebouncedCallback(
         (value: number) => {
+            if (!motor.frequencyRange) {
+                return;
+            }
+
             setShortStateChange(true);
 
-            // get based on motor
-            const frequencies = {
-                0: 300, // 15 Hz
-                1: 450, // 20 Hz
-                2: 600, // 30 Hz
-                3: 750, // 35 Hz
-                4: 900, // 45 Hz
-            };
-            const frequency = frequencies[value];
+            const frequency = motor.frequencyRange[value];
             setFrequency(stateConfigurationEndpoint, frequency);
         },
         500,
@@ -357,7 +352,7 @@ const Motor: React.FC<MotorProperties> = (
             <PluridSlider
                 value={speed}
                 step={1}
-                max={4}
+                max={(motor.frequencyRange?.length || 2) - 1}
                 atChange={(value) => {
                     setSpeed(value);
 
