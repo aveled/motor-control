@@ -101,6 +101,11 @@ interface Motor {
         right: 'start' | 'reverse';
         duration?: number;
     };
+    frequencyRange?: {
+        start: number;
+        end: number;
+        step: number;
+    };
     hooks?: {
         frequencyRead?: (value: number) => number;
         frequencyWrite?: (value: number) => number;
