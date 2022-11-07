@@ -73,6 +73,10 @@ interface MotorControlOptions {
          * URL or Base64 data image, e.g. `data:image/x-icon;base64,...`
          */
         pageIcon?: string;
+        /**
+         * Plurid Theme name, https://github.com/plurid/plurid-themes#usage
+         */
+        theme?: string;
     };
 }
 
