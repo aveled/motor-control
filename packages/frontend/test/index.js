@@ -2,12 +2,10 @@ require('dotenv').config({
     path: './environment/.env.local',
 });
 
-const generateServer = require('../build');
+const MotorControlFrontend = require('../build');
 
 
 
-const configuration = {
+MotorControlFrontend({
     endpoint: 'http://localhost:34500',
-};
-
-generateServer(configuration);
+});
