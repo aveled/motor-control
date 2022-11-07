@@ -242,6 +242,9 @@ const Motor: React.FC<MotorProperties> = (
             >
                 <PluridSpinner
                     theme={stateGeneralTheme}
+                    style={{
+                        top: '53%',
+                    }}
                 />
             </StyledMotor>
         );
