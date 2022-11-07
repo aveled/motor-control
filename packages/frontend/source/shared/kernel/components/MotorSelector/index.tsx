@@ -20,6 +20,10 @@
     } from '~shared/data/interfaces';
 
     import {
+        SELECT_MOTOR,
+    } from '~kernel-data/constants';
+
+    import {
         PluridDropdown,
     } from '~kernel-services/styled';
 
@@ -93,6 +97,11 @@ const MotorSelector: React.FC<MotorSelectorProperties> = (
     return (
         <StyledMotorSelector
             theme={stateGeneralTheme}
+            style={{
+                marginBottom: selectedMotor === SELECT_MOTOR
+                    ? '0'
+                    : '4rem',
+            }}
         >
             <PluridDropdown
                 selectables={[
