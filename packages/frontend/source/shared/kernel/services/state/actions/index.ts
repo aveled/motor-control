@@ -1,8 +1,6 @@
 // #region imports
     // #region external
-    import * as general from '../modules/general';
-    import * as configuration from '../modules/configuration';
-    import * as themes from '../modules/themes';
+    import modules from '../modules';
     // #endregion external
 // #endregion imports
 
@@ -10,9 +8,14 @@
 
 // #region module
 const actions = {
-    general: general.actions,
-    configuration: configuration.actions,
-    themes: themes.actions,
+    general: modules.general.actions,
+    notifications: modules.notifications.actions,
+    owner: modules.owner.actions,
+    product: modules.product.actions,
+    configuration: modules.configuration.actions,
+    sitting: modules.sitting.actions,
+    themes: modules.themes.actions,
+    views: modules.views.actions,
 };
 // #endregion module
 

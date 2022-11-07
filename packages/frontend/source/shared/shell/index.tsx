@@ -8,6 +8,11 @@
     // #endregion libraries
 
 
+    // #region external
+    import Toolbar from '~kernel-components/Toolbar';
+    // #endregion external
+
+
     // #region internal
     import {
         GlobalStyle,
@@ -37,6 +42,8 @@ const Shell: React.FC<ShellProperties> = (
     return (
         <>
             <GlobalStyle />
+
+            <Toolbar />
 
             {children}
         </>

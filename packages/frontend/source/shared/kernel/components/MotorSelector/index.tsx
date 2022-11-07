@@ -23,6 +23,10 @@
         PluridDropdown,
     } from '~kernel-services/styled';
 
+    import {
+        setSelectedMotor as setSelectedMotorLogic,
+    } from '~kernel-services/logic';
+
     import { AppState } from '~kernel-services/state/store';
     import StateContext from '~kernel-services/state/context';
     import selectors from '~kernel-services/state/selectors';
@@ -98,6 +102,7 @@ const MotorSelector: React.FC<MotorSelectorProperties> = (
                 atSelect={(selection) => {
                     if (typeof selection === 'string') {
                         setSelectedMotor(selection);
+                        setSelectedMotorLogic(selection);
                     }
                 }}
                 selectAtHover={false}

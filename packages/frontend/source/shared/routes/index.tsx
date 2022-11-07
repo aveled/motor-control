@@ -12,6 +12,8 @@
     import Home from '~kernel-containers/Home';
     import NotFoundPlane from '../kernel/planes/NotFound';
 
+    import Settings from '~kernel-containers/Settings';
+
     import Head from '../kernel/components/Head';
     // #endregion external
 // #endregion imports
@@ -22,6 +24,12 @@
 const indexRoute: PluridReactRoute = {
     value: '/',
     exterior: Home,
+};
+
+
+const settingsRoute: PluridReactRoute = {
+    value: '/settings',
+    exterior: Settings,
 };
 
 
@@ -43,6 +51,7 @@ const notFoundRoute: PluridReactRoute = {
 
 const routes: PluridReactRoute[] = [
     indexRoute,
+    settingsRoute,
     notFoundRoute,
 ];
 // #endregion module

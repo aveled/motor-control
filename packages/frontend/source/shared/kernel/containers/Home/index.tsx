@@ -2,6 +2,7 @@
     // #region libraries
     import React, {
         useState,
+        useEffect,
     } from 'react';
 
     import { AnyAction } from 'redux';
@@ -24,19 +25,14 @@
         SELECT_MOTOR,
     } from '~kernel-data/constants';
 
+    import {
+        getSelectedMotor,
+    } from '~kernel-services/logic';
+
     import Head from '~kernel-components/Head';
 
     import MotorSelector from '~kernel-components/MotorSelector';
     import Motor from '~kernel-components/Motor';
-
-    import {
-        StyledPluridPureButton,
-        PluridSpinner,
-    } from '~kernel-services/styled';
-
-    import {
-        restartServer,
-    } from '~kernel-services/logic';
 
     import { AppState } from '~kernel-services/state/store';
     import StateContext from '~kernel-services/state/context';
@@ -62,7 +58,6 @@ export interface HomeOwnProperties {
 export interface HomeStateProperties {
     stateGeneralTheme: Theme;
     stateInteractionTheme: Theme;
-    stateConfigurationEndpoint: string;
     stateConfigurationMeta: MotorisMergedConfiguration['meta'];
 }
 
@@ -82,7 +77,6 @@ const Home: React.FC<HomeProperties> = (
         // #region state
         stateGeneralTheme,
         // stateInteractionTheme,
-        stateConfigurationEndpoint,
         stateConfigurationMeta,
         // #endregion state
     } = properties;
@@ -91,42 +85,23 @@ const Home: React.FC<HomeProperties> = (
 
     // #region state
     const [
-        loading,
-        setLoading,
-    ] = useState(false);
-
-    const [
         selectedMotor,
         setSelectedMotor,
     ] = useState(SELECT_MOTOR);
     // #endregion state
 
 
-    // #region handlers
-    const restart = () => {
-        restartServer(stateConfigurationEndpoint);
-        setLoading(true);
-
-        setTimeout(() => {
-            location.reload();
-        }, 1_200);
-    }
-    // #endregion handlers
+    // #region effects
+    useEffect(() => {
+        const selectedMotor = getSelectedMotor();
+        if (selectedMotor) {
+            setSelectedMotor(selectedMotor);
+        }
+    }, []);
+    // #endregion effects
 
 
     // #region render
-    if (loading) {
-        return (
-            <StyledHome
-                theme={stateGeneralTheme}
-            >
-                <PluridSpinner
-                    theme={stateGeneralTheme}
-                />
-            </StyledHome>
-        );
-    }
-
     return (
         <StyledHome
             theme={stateGeneralTheme}
@@ -158,17 +133,6 @@ const Home: React.FC<HomeProperties> = (
             <Motor
                 selectedMotor={selectedMotor}
             />
-
-            <StyledPluridPureButton
-                text={'RESTART'}
-                atClick={() => {
-                    restart();
-                }}
-                theme={stateGeneralTheme}
-                style={{
-                    marginTop: '4rem',
-                }}
-            />
         </StyledHome>
     );
     // #endregion render
@@ -180,7 +144,6 @@ const mapStateToProperties = (
 ): HomeStateProperties => ({
     stateGeneralTheme: selectors.themes.getGeneralTheme(state),
     stateInteractionTheme: selectors.themes.getInteractionTheme(state),
-    stateConfigurationEndpoint: selectors.configuration.getConfiguration(state).endpoint,
     stateConfigurationMeta: selectors.configuration.getConfiguration(state).meta,
 });
 
