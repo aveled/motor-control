@@ -12,6 +12,10 @@
 
 
     import {
+        Theme,
+    } from '@plurid/plurid-themes';
+
+    import {
         PluridReactComponent,
     } from '@plurid/plurid-react';
     // #endregion libraries
@@ -26,7 +30,7 @@
 
     import { AppState } from '~kernel-services/state/store';
     import StateContext from '~kernel-services/state/context';
-    // import selectors from '~kernel-services/state/selectors';
+    import selectors from '~kernel-services/state/selectors';
     import actions from '~kernel-services/state/actions';
     // #endregion external
 
@@ -46,6 +50,7 @@ export interface ShellOwnProperties {
 }
 
 export interface ShellStateProperties {
+    stateGeneralTheme: Theme;
 }
 
 export interface ShellDispatchProperties {
@@ -63,7 +68,13 @@ const Shell: React.FC<ShellProperties> = (
 ) => {
     // #region properties
     const {
+        // #region own§
         children,
+        // #endregion own§
+
+        // #region state
+        stateGeneralTheme,
+        // #endregion state
 
         // #region dispatch
         dispatchSetLanguage,
@@ -85,7 +96,9 @@ const Shell: React.FC<ShellProperties> = (
     // #region render
     return (
         <>
-            <GlobalStyle />
+            <GlobalStyle
+                theme={stateGeneralTheme}
+            />
 
             <Toolbar />
 
@@ -99,6 +112,7 @@ const Shell: React.FC<ShellProperties> = (
 const mapStateToProperties = (
     state: AppState,
 ): ShellStateProperties => ({
+    stateGeneralTheme: selectors.themes.getGeneralTheme(state),
 });
 
 

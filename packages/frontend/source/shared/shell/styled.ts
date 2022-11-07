@@ -3,13 +3,22 @@
     import {
         createGlobalStyle,
     } from 'styled-components';
+
+
+    import {
+        Theme,
+    } from '@plurid/plurid-themes';
     // #endregion libraries
 // #endregion imports
 
 
 
 // #region module
-export const GlobalStyle = createGlobalStyle`
+export interface IGlobalStyle {
+    theme: Theme;
+}
+
+export const GlobalStyle = createGlobalStyle<IGlobalStyle>`
     *, *::after, *::before {
         box-sizing: border-box;
     }
@@ -23,11 +32,18 @@ export const GlobalStyle = createGlobalStyle`
         overflow: hidden;
         margin: 0;
         padding: 0;
-        font-family: 'Ubuntu', 'Work Sans', -apple-system, BlinkMacSystemFont, 'Roboto',
-            'Droid Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+        font-family: ${
+            ({
+                theme,
+            }: IGlobalStyle) => theme.fontFamilySansSerif
+        };
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        color: white;
+        color: ${
+            ({
+                theme,
+            }: IGlobalStyle) => theme.colorPrimary
+        };
         background: radial-gradient(ellipse at center, hsl(220, 10%, 32%) 0%, hsl(220, 10%, 18%) 100%);
     }
 
