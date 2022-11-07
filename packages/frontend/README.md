@@ -34,9 +34,14 @@
 
 ## About
 
-`MotorControl` is a light API for (semi-)industrial contexts intended to be consumed from the Web application or programmatically in order to run simple motor control tasks: start, stop, reverse, change frequency/rpm.
+`MotorControl` is a lightweight Web Application Programming Interface (API) for (semi-)industrial contexts intended to be consumed from the Web application or programmatically in order to run simple motor control tasks: start, stop, reverse, change frequency/rpm.
 
 As architecture, the `MotorControl backend` is meant to speak over Modbus, TCP/IP or RTU, with a Programmable Logic Controller (PLC) or Variable-Frequency Drive (VFD). The configuration of the backend specifies registers and values. The `MotorControl frontend` is a simple web application configured to speak over HTTP with the backend. Both the backend and the frontend can be hosted on the same Single-Board Computer (SBC), with the web application made available through the WiFi local Router (WFR).
+
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/aveled/motor-control/master/about/diagrams/architecture.png" height="600px">
+</p>
 
 
 
