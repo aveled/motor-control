@@ -25,6 +25,7 @@ export interface MotorisMergedConfiguration {
         favicon?: string;
         pageTitle?: string;
         pageIcon?: string;
+        theme?: string;
         language?: Language;
     };
     motors: Record<string, Motor>;

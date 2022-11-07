@@ -27,6 +27,28 @@
 
 
 // #region module
+const getConfiguration = async (
+    endpoint: string,
+) => {
+    try {
+        const {
+            meta,
+            motors,
+        } = await (await fetch(endpoint + '/configuration')).json();
+
+        return {
+            meta,
+            motors,
+        };
+    } catch (error) {
+        return {
+            meta: {},
+            motors: {},
+        };
+    }
+}
+
+
 const preserves = (
     configuration: MotorisConfiguration,
 ): PluridPreserve<
@@ -40,7 +62,7 @@ const preserves = (
             const {
                 meta,
                 motors,
-            } = await (await fetch(configuration.endpoint + '/configuration')).json();
+            } = await getConfiguration(configuration.endpoint);
 
             const store = reduxStore({
                 general: {
