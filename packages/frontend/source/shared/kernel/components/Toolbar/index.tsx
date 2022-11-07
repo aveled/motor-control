@@ -14,6 +14,14 @@
 
 
     // #region external
+    import {
+        languages,
+    } from '~kernel-data/constants';
+
+    import {
+        Language,
+    } from '~kernel-data/interfaces';
+
     import { AppState } from '~kernel-services/state/store';
     import StateContext from '~kernel-services/state/context';
     import actions from '~kernel-services/state/actions';
@@ -37,6 +45,7 @@ export interface ToolbarGeneralOwnProperties {
 }
 
 export interface ToolbarGeneralStateProperties {
+    stateConfigurationLanguage: Language;
 }
 
 export interface ToolbarGeneralDispatchProperties {
@@ -54,6 +63,10 @@ const ToolbarGeneral: React.FC<ToolbarGeneralProperties> = (
 ) => {
     // #region properties
     const {
+        // #region state
+        stateConfigurationLanguage,
+        // #endregion state
+
         // #region dispatch
         dispatchSetGeneralView,
         // #endregion dispatch
@@ -63,7 +76,7 @@ const ToolbarGeneral: React.FC<ToolbarGeneralProperties> = (
 
     // #region handlers
     const handleNavigation = (
-        view: any,
+        view: string,
     ) => {
         pluridRouterNavigate(view);
         dispatchSetGeneralView(view);
@@ -74,7 +87,7 @@ const ToolbarGeneral: React.FC<ToolbarGeneralProperties> = (
     // #region render
     return (
         <ToolbarGeneralComponent
-            buttons={buttons}
+            buttons={buttons(languages[stateConfigurationLanguage])}
             selectors={selectors}
             context={StateContext}
 
@@ -90,6 +103,7 @@ const ToolbarGeneral: React.FC<ToolbarGeneralProperties> = (
 const mapStateToProperties = (
     state: AppState,
 ): ToolbarGeneralStateProperties => ({
+    stateConfigurationLanguage: selectors.configuration.getConfiguration(state).meta?.language || 'english',
 });
 
 
