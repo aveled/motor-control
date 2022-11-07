@@ -8,7 +8,7 @@
 
 // #region module
 const initialState: Types.State = {
-    general: '/',
+    general: '',
 };
 // #endregion module
 

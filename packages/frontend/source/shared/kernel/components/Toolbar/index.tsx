@@ -16,7 +16,7 @@
     // #region external
     import { AppState } from '~kernel-services/state/store';
     import StateContext from '~kernel-services/state/context';
-    // import actions from '~kernel-services/state/actions';
+    import actions from '~kernel-services/state/actions';
     import selectors from '~kernel-services/state/selectors';
 
     import {
@@ -40,6 +40,7 @@ export interface ToolbarGeneralStateProperties {
 }
 
 export interface ToolbarGeneralDispatchProperties {
+    dispatchSetGeneralView: typeof actions.views.setGeneralView;
 }
 
 export type ToolbarGeneralProperties =
@@ -52,10 +53,11 @@ const ToolbarGeneral: React.FC<ToolbarGeneralProperties> = (
     properties,
 ) => {
     // #region properties
-    // const {
-    //     // #region dispatch
-    //     // #endregion dispatch
-    // } = properties;
+    const {
+        // #region dispatch
+        dispatchSetGeneralView,
+        // #endregion dispatch
+    } = properties;
     // #endregion properties
 
 
@@ -64,6 +66,7 @@ const ToolbarGeneral: React.FC<ToolbarGeneralProperties> = (
         view: any,
     ) => {
         pluridRouterNavigate(view);
+        dispatchSetGeneralView(view);
     }
     // #endregion handlers
 
@@ -93,6 +96,11 @@ const mapStateToProperties = (
 const mapDispatchToProperties = (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
 ): ToolbarGeneralDispatchProperties => ({
+    dispatchSetGeneralView: (
+        view,
+    ) => dispatch(
+        actions.views.setGeneralView(view),
+    ),
 });
 
 
