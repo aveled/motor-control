@@ -339,7 +339,7 @@ const Motor: React.FC<MotorProperties> = (
         </StyledLeftRight>
     ) : (<></>);
 
-    const MotorFrequency = motor.frequency ? (
+    const MotorFrequency = motor.frequency && motor.frequencyRange ? (
         <StyledLeftRight>
             <StyledText
                 style={{
@@ -352,7 +352,7 @@ const Motor: React.FC<MotorProperties> = (
             <PluridSlider
                 value={speed}
                 step={1}
-                max={(motor.frequencyRange?.length || 2) - 1}
+                max={motor.frequencyRange.length - 1}
                 atChange={(value) => {
                     setSpeed(value);
 
