@@ -698,7 +698,7 @@ class MotorControl {
                     };
                 });
 
-                const motors = {};
+                const motors: Record<string, any> = {};
                 for (const motor of motorsData) {
                     const {
                         id,
