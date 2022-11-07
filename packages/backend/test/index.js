@@ -17,9 +17,14 @@ MotorControlBackend({
                 start: 3,
                 stop: 0,
                 reverse: 6,
-                frequency: 400,
+                frequency: 450
             },
             directions: true,
+            frequencyRange: {
+                start: 300,
+                end: 900,
+                step: 150,
+            },
         },
         two: {
             poles: 2,
