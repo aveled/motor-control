@@ -34,17 +34,81 @@
 
 ## About
 
+`MotorControl` is a light API for (semi-)industrial contexts intended to be consumed from the Web application or programmatically in order to run simple motor control tasks: start, stop, reverse, change frequency/rpm.
+
+As architecture, the `MotorControl backend` is meant to speak over Modbus, TCP/IP or RTU, with a Programmable Logic Controller (PLC) or Variable-Frequency Drive (VFD). The configuration of the backend specifies registers and values. The `MotorControl frontend` is a simple web application configured to speak over HTTP with the backend. Both the backend and the frontend can be hosted on the same Single-Board Computer (SBC), with the web application made available through the WiFi local Router (WFR).
+
 
 
 ## Backend
 
 ### Configuration
 
+The configuration interface
+
 ``` typescript
-import MotorControl from '@aveled/motor-control-frontend';
+interface MotorControlOptions {
+    connections: Record<string, Connection>;
+    motors: Record<string, Motor>;
+    frontend?: {
+        title?: string;
+        /**
+         * URL or Base64 data image, e.g. `data:image/x-icon;base64,...`
+         */
+        favicon?: string;
+        pageTitle?: string;
+        /**
+         * URL or Base64 data image, e.g. `data:image/x-icon;base64,...`
+         */
+        pageIcon?: string;
+    };
+}
+
+type Connection = ModbusTCPConnection | ModbusRTUConnection;
+
+interface ModbusTCPConnection {
+    default?: boolean;
+    type: 'modbusTCP';
+    ip: string;
+    port: number;
+    id: number;
+}
+
+interface ModbusRTUConnection {
+    default?: boolean;
+    type: 'modbusRTU';
+    path: string;
+    baudRate: number;
+    dataBits: number;
+    stopBits: number;
+    parity: 'even' | 'odd' | 'none' | 'mark' | 'space' | undefined;
+}
+
+interface Motor {
+    default?: boolean;
+    connection?: string;
+    poles: 2 | 4;
+    registers: Record<string, number>;
+    values: Record<string, number>;
+    directions?: boolean | {
+        left: 'start' | 'reverse';
+        right: 'start' | 'reverse';
+        duration?: number;
+    };
+    hooks?: {
+        frequencyRead?: (value: number) => number;
+        frequencyWrite?: (value: number) => number;
+    },
+}
+```
+
+Example:
+
+``` typescript
+import MotorControlBackend from '@aveled/motor-control-backend';
 
 
-new MotorControl({
+MotorControlBackend({
     motors: {
         one: {
             poles: 2,
@@ -73,7 +137,7 @@ new MotorControl({
         },
     },
     frontend: {
-        title: '',
+        title: 'custom title',
         favicon: '',
         pageTitle: '',
         pageIcon: '',
@@ -202,15 +266,15 @@ parameters {
 
 ### Configuration
 
+The frontend requires the `endpoint` of the backend.
+
 ``` typescript
-import generateServer from '@aveled/motor-control-frontend';
+import MotorControlFrontend from '@aveled/motor-control-frontend';
 
 
-const configuration = {
+MotorControlFrontend({
     endpoint: 'http://192.168.100.98:34500',
-};
-
-generateServer(configuration);
+});
 ```
 
 
