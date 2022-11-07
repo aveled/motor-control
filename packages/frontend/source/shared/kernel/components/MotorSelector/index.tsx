@@ -106,7 +106,9 @@ const MotorSelector: React.FC<MotorSelectorProperties> = (
             <div
                 style={{
                     userSelect: 'none',
-                    filter: 'grayscale(100%)',
+                    filter: stateGeneralTheme.type === 'dark'
+                        ? 'grayscale(100%)'
+                        : 'grayscale(100%) invert(1)',
                 }}
             >
                 ⚡
