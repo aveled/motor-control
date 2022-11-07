@@ -57,5 +57,6 @@ MotorControlBackend({
         favicon: '',
         pageTitle: '',
         pageIcon: '',
+        theme: '',
     },
 });
