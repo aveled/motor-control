@@ -92,6 +92,7 @@ export interface MotorControlOptions<C = Record<string, Connection>> {
          * Plurid Theme name, https://github.com/plurid/plurid-themes#usage
          */
         theme?: string;
+        language?: 'english' | 'french' | 'german' | 'romanian' | 'chinese' | 'japanese' | 'hindi';
     };
 }
 // #endregion module

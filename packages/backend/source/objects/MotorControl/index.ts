@@ -731,6 +731,7 @@ class MotorControl {
                     pageTitle,
                     pageIcon,
                     theme,
+                    language,
                 } = this.options.frontend;
 
                 return {
@@ -739,6 +740,7 @@ class MotorControl {
                     pageTitle,
                     pageIcon,
                     theme,
+                    language,
                 };
             }
             const meta = unpackMeta();
