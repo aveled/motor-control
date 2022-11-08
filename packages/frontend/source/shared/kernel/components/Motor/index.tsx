@@ -314,7 +314,7 @@ const Motor: React.FC<MotorProperties> = (
             }}
             theme={stateGeneralTheme}
             style={{
-                minWidth: '280px',
+                minWidth: '260px',
             }}
         />
     );
