@@ -220,6 +220,9 @@ const Settings: React.FC<SettingsProperties> = (
                 setToken(event.target.value);
             }}
             theme={stateGeneralTheme}
+            style={{
+                width: '280px',
+            }}
         />
     );
 
