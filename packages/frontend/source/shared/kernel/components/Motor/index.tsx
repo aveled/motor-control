@@ -148,6 +148,11 @@ const Motor: React.FC<MotorProperties> = (
         shortStateChange,
         setShortStateChange,
     ] = useState(false);
+
+    const [
+        frequencySliderWidth,
+        setFrequencySliderWidth,
+    ] = useState(160);
     // #endregion state
 
 
@@ -196,6 +201,12 @@ const Motor: React.FC<MotorProperties> = (
 
         return () => {
             clearInterval(interval);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (window.innerWidth < 900) {
+            setFrequencySliderWidth(220);
         }
     }, []);
 
@@ -369,7 +380,7 @@ const Motor: React.FC<MotorProperties> = (
                     changeFrequency(value);
                 }}
                 theme={stateGeneralTheme}
-                width={160}
+                width={frequencySliderWidth}
             />
         </StyledLeftRight>
     ) : (<></>);
