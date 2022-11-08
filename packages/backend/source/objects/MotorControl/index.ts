@@ -209,11 +209,7 @@ class MotorControl {
                         token,
                         motor,
                         duration,
-                    } = request.query as TimedRequestParameters;
-
-                    const durationParsed = typeof duration !== 'undefined'
-                        ? parseInt(duration as any)
-                        : undefined;
+                    } = this.parseTimedRequest(request);
 
                     const validRequest = handleToken(token);
                     if (!validRequest) {
@@ -235,7 +231,7 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(durationParsed, motorData);
+                    handleDuration(duration, motorData);
                 },
             );
         });
@@ -282,11 +278,7 @@ class MotorControl {
                         token,
                         motor,
                         duration,
-                    } = request.query as TimedRequestParameters;
-
-                    const durationParsed = typeof duration !== 'undefined'
-                        ? parseInt(duration as any)
-                        : undefined;
+                    } = this.parseTimedRequest(request);
 
                     const validRequest = handleToken(token);
                     if (!validRequest) {
@@ -312,7 +304,7 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(durationParsed, motorData);
+                    handleDuration(duration, motorData);
                 },
             );
         });
@@ -327,11 +319,7 @@ class MotorControl {
                         token,
                         motor,
                         duration,
-                    } = request.query as TimedRequestParameters;
-
-                    const durationParsed = typeof duration !== 'undefined'
-                        ? parseInt(duration as any)
-                        : undefined;
+                    } = this.parseTimedRequest(request);
 
                     const validRequest = handleToken(token);
                     if (!validRequest) {
@@ -361,7 +349,7 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(durationParsed, motorData);
+                    handleDuration(duration, motorData);
                 },
             );
         });
@@ -376,11 +364,7 @@ class MotorControl {
                         token,
                         motor,
                         duration,
-                    } = request.query as TimedRequestParameters;
-
-                    const durationParsed = typeof duration !== 'undefined'
-                        ? parseInt(duration as any)
-                        : undefined;
+                    } = this.parseTimedRequest(request);
 
                     const validRequest = handleToken(token);
                     if (!validRequest) {
@@ -410,7 +394,7 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(durationParsed, motorData);
+                    handleDuration(duration, motorData);
                 },
             );
         });
@@ -784,6 +768,34 @@ class MotorControl {
             motorID,
             motorData: this.options.motors[motorID],
         };
+    }
+
+    private parseTimedRequest(
+        request: express.Request,
+    ) {
+        const {
+            token,
+            motor,
+            duration,
+        } = request.query;
+
+        const tokenParsed = typeof token === 'string'
+            ? token
+            : undefined;
+        const motorParsed = typeof motor === 'string'
+            ? motor
+            : undefined;
+        const durationParsed = typeof duration == 'string'
+            ? isNaN(parseInt(duration)) ? undefined : parseInt(duration)
+            : undefined;
+
+        const parameters: TimedRequestParameters =  {
+            token: tokenParsed,
+            motor: motorParsed,
+            duration: durationParsed,
+        };
+
+        return parameters;
     }
 
 
