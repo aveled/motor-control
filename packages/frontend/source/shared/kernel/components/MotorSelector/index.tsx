@@ -41,6 +41,7 @@
     // #region internal
     import {
         StyledMotorSelector,
+        StyledMotorSign,
     } from './styled';
     // #endregion internal
 // #endregion imports
@@ -103,16 +104,11 @@ const MotorSelector: React.FC<MotorSelectorProperties> = (
                     : '4rem',
             }}
         >
-            <div
-                style={{
-                    userSelect: 'none',
-                    filter: stateGeneralTheme.type === 'dark'
-                        ? 'grayscale(100%)'
-                        : 'grayscale(100%) invert(1)',
-                }}
+            <StyledMotorSign
+                theme={stateGeneralTheme}
             >
                 ⚡
-            </div>
+            </StyledMotorSign>
 
             <PluridDropdown
                 selected={selectedMotor}
