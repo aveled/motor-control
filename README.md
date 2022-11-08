@@ -77,6 +77,7 @@ interface MotorControlOptions {
          * Plurid Theme name, https://github.com/plurid/plurid-themes#usage
          */
         theme?: string;
+        language?: 'english' | 'french' | 'german' | 'romanian' | 'chinese' | 'japanese' | 'hindi';
     };
 }
 
