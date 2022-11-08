@@ -111,8 +111,11 @@ interface Motor {
     registers: Record<string, number>;
     values: Record<string, number>;
     directions?: boolean | {
-        left: 'start' | 'reverse';
-        right: 'start' | 'reverse';
+        left?: 'start' | 'reverse';
+        right?: 'start' | 'reverse';
+        /**
+         * In seconds.
+         */
         duration?: number;
     };
     frequencyRange?: {
