@@ -36,12 +36,12 @@ export const setLanguage = (
 
 export const getLanguage = () => {
     if (typeof window === 'undefined') {
-        return 'english';
+        return;
     }
 
     const language = window.localStorage.getItem(MOTOR_CONTROLS_LANGUAGE);
 
-    return language || 'english';
+    return language;
 }
 
 

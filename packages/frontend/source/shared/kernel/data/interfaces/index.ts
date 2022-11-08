@@ -1,4 +1,14 @@
+// #region imports
+    // #region external
+    import {
+        languageMap,
+    } from '~kernel-data/constants';
+    // #endregion external
+// #endregion imports
+
+
+
 // #region module
-export type Language =
-    | 'english' | 'français' | 'deutsch' | 'română' | '中国人' | '日本' | 'हिन्दी';
+export type AvailableLanguages = keyof typeof languageMap;
+export type Language = typeof languageMap[keyof typeof languageMap];
 // #endregion module

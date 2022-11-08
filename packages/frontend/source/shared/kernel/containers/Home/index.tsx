@@ -22,6 +22,7 @@
     } from '~shared/data/interfaces';
 
     import {
+        languages,
         SELECT_MOTOR,
     } from '~kernel-data/constants';
 
@@ -87,7 +88,10 @@ const Home: React.FC<HomeProperties> = (
     const [
         selectedMotor,
         setSelectedMotor,
-    ] = useState(SELECT_MOTOR);
+    ] = useState(stateConfigurationMeta?.language
+        ? languages[stateConfigurationMeta.language].selectMotor
+        : SELECT_MOTOR
+    );
     // #endregion state
 
 
@@ -96,8 +100,15 @@ const Home: React.FC<HomeProperties> = (
         const selectedMotor = getSelectedMotor();
         if (selectedMotor) {
             setSelectedMotor(selectedMotor);
+            return;
         }
-    }, []);
+
+        if (stateConfigurationMeta?.language) {
+            setSelectedMotor(languages[stateConfigurationMeta.language].selectMotor);
+        }
+    }, [
+        stateConfigurationMeta?.language,
+    ]);
     // #endregion effects
 
 

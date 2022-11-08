@@ -19,6 +19,10 @@
     } from '~shared/data/interfaces';
 
     import {
+        languageMap,
+    } from '~kernel-data/constants';
+
+    import {
         getRandomFace,
     } from '~kernel-planes/NotFound/logic';
 
@@ -78,7 +82,12 @@ const preserves = (
                 },
                 configuration: {
                     endpoint: configuration.endpoint,
-                    meta,
+                    meta: {
+                        ...meta,
+                        language: meta.language
+                            ? languageMap[meta.language]
+                            : undefined,
+                    },
                     motors,
                 },
                 themes: stateThemes,

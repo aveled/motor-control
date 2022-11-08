@@ -102,4 +102,15 @@ export const languages = {
         restart: 'पुनर्प्रारंभ करें',
     },
 };
+
+
+export const languageMap = {
+    'english': 'english' as const,
+    'french': 'français' as const,
+    'german': 'deutsch' as const,
+    'romanian': 'română' as const,
+    'chinese': '中国人' as const,
+    'japanese': '日本' as const,
+    'hindi': 'हिन्दी' as const,
+};
 // #endregion module
