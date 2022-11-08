@@ -28,7 +28,7 @@ export interface IStyledMotorSign {
 }
 
 export const StyledMotorSign = styled.div<IStyledMotorSign>`
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     user-select: none;
     filter: ${
         ({

@@ -123,9 +123,11 @@ const MotorSelector: React.FC<MotorSelectorProperties> = (
                 }}
                 selectAtHover={false}
                 width={150}
+                listTop={'40px'}
                 theme={stateGeneralTheme}
                 style={{
-                    fontSize: '1.3rem',
+                    fontSize: '2rem',
+                    fontWeight: 'bold',
                 }}
             />
         </StyledMotorSelector>
