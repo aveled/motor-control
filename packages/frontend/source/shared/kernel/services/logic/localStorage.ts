@@ -45,6 +45,29 @@ export const getLanguage = () => {
 }
 
 
+const MOTOR_CONTROLS_THEME = 'motor-controls-theme';
+
+export const setTheme = (
+    value: string,
+) => {
+    if (typeof window === 'undefined') {
+        return;
+    }
+
+    window.localStorage.setItem(MOTOR_CONTROLS_THEME, value);
+}
+
+export const getTheme = () => {
+    if (typeof window === 'undefined') {
+        return;
+    }
+
+    const language = window.localStorage.getItem(MOTOR_CONTROLS_THEME);
+
+    return language;
+}
+
+
 const MOTOR_CONTROLS_TOKEN = 'motor-controls-token';
 
 export const setToken = (

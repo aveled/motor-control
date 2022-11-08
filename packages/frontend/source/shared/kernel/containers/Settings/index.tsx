@@ -12,7 +12,7 @@
     import { connect } from 'react-redux';
 
 
-    import {
+    import themes, {
         Theme,
     } from '@plurid/plurid-themes';
 
@@ -24,6 +24,7 @@
 
     // #region external
     import {
+        themeNames,
         languages,
     } from '~kernel-data/constants';
 
@@ -34,12 +35,13 @@
     import {
         PluridSpinner,
         StyledPluridPureButton,
-        PluridFormLeftRight,
+        StyledPluridFormLeftRight,
         PluridDropdown,
         PluridInputLine,
     } from '~kernel-services/styled';
 
     import {
+        setTheme as setThemeLogic,
         setLanguage as setLanguageLogic,
         setToken as setTokenLogic,
         getToken,
@@ -75,6 +77,8 @@ export interface SettingsStateProperties {
 
 export interface SettingsDispatchProperties {
     // dispatchSetLanguage: DispatchAction<typeof actions.configuration.setLanguage>;
+    dispatchSetGeneralTheme: any;
+    dispatchSetInteractionTheme: any;
     dispatchSetLanguage: any;
 }
 
@@ -98,6 +102,8 @@ const Settings: React.FC<SettingsProperties> = (
 
         // #region dispatch
         dispatchSetLanguage,
+        dispatchSetGeneralTheme,
+        dispatchSetInteractionTheme,
         // #endregion dispatch
     } = properties;
     // #endregion properties
@@ -157,6 +163,79 @@ const Settings: React.FC<SettingsProperties> = (
         );
     }
 
+    const ThemeSelector = (
+        <StyledPluridFormLeftRight>
+            <div>
+                {languages[stateConfigurationLanguage].theme}
+            </div>
+
+            <PluridDropdown
+                selected={stateGeneralTheme.name}
+                selectables={[
+                    ...themeNames,
+                ]}
+                atSelect={(selection) => {
+                    if (typeof selection === 'string') {
+                        dispatchSetGeneralTheme(themes[selection]);
+                        dispatchSetInteractionTheme(themes[selection]);
+                        setThemeLogic(selection);
+                    }
+                }}
+                theme={stateGeneralTheme}
+                width={90}
+                filterable={true}
+                heightItems={5}
+            />
+        </StyledPluridFormLeftRight>
+    );
+
+    const LanguageSelector = (
+        <StyledPluridFormLeftRight>
+            <div>
+                {languages[stateConfigurationLanguage].language}
+            </div>
+
+            <PluridDropdown
+                selected={stateConfigurationLanguage}
+                selectables={[
+                    ...Object.keys(languages).sort(),
+                ]}
+                atSelect={(selection) => {
+                    if (typeof selection === 'string') {
+                        dispatchSetLanguage(selection);
+                        setLanguageLogic(selection);
+                    }
+                }}
+                theme={stateGeneralTheme}
+                width={90}
+            />
+        </StyledPluridFormLeftRight>
+    );
+
+    const TokenInput = (
+        <PluridInputLine
+            name={languages[stateConfigurationLanguage].token}
+            text={token}
+            atChange={(event) => {
+                setToken(event.target.value);
+            }}
+            theme={stateGeneralTheme}
+        />
+    );
+
+    const RestartButton = (
+        <StyledPluridPureButton
+            text={languages[stateConfigurationLanguage].restart}
+            atClick={() => {
+                restart();
+            }}
+            theme={stateGeneralTheme}
+            style={{
+                marginTop: '4rem',
+            }}
+        />
+    );
+
     return (
         <StyledSettings
             theme={stateGeneralTheme}
@@ -165,52 +244,10 @@ const Settings: React.FC<SettingsProperties> = (
                 {languages[stateConfigurationLanguage].settings}
             </h1>
 
-            <PluridFormLeftRight
-                style={{
-                    marginBottom: '2rem',
-                    fontSize: '0.9rem',
-                    padding: '0 0.8rem',
-                }}
-            >
-                <div>
-                    {languages[stateConfigurationLanguage].language}
-                </div>
-
-                <PluridDropdown
-                    selected={stateConfigurationLanguage}
-                    selectables={[
-                        ...Object.keys(languages).sort(),
-                    ]}
-                    atSelect={(selection) => {
-                        if (typeof selection === 'string') {
-                            dispatchSetLanguage(selection);
-                            setLanguageLogic(selection);
-                        }
-                    }}
-                    theme={stateGeneralTheme}
-                    width={90}
-                />
-            </PluridFormLeftRight>
-
-            <PluridInputLine
-                name={languages[stateConfigurationLanguage].token}
-                text={token}
-                atChange={(event) => {
-                    setToken(event.target.value);
-                }}
-                theme={stateGeneralTheme}
-            />
-
-            <StyledPluridPureButton
-                text={languages[stateConfigurationLanguage].restart}
-                atClick={() => {
-                    restart();
-                }}
-                theme={stateGeneralTheme}
-                style={{
-                    marginTop: '4rem',
-                }}
-            />
+            {ThemeSelector}
+            {LanguageSelector}
+            {TokenInput}
+            {RestartButton}
         </StyledSettings>
     );
     // #endregion render
@@ -230,6 +267,16 @@ const mapStateToProperties = (
 const mapDispatchToProperties = (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
 ): SettingsDispatchProperties => ({
+    dispatchSetGeneralTheme: (
+        payload: any,
+    ) => dispatch(
+        actions.themes.setGeneralTheme(payload),
+    ),
+    dispatchSetInteractionTheme: (
+        payload: any,
+    ) => dispatch(
+        actions.themes.setInteractionTheme(payload),
+    ),
     dispatchSetLanguage: (
         payload: any,
     ) => dispatch(

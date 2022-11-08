@@ -11,7 +11,7 @@
     import { connect } from 'react-redux';
 
 
-    import {
+    import themes, {
         Theme,
     } from '@plurid/plurid-themes';
 
@@ -24,8 +24,10 @@
     // #region external
     import {
         getLanguage,
+        getTheme,
     } from '~kernel-services/logic';
 
+    import Head from '~kernel-components/Head';
     import Toolbar from '~kernel-components/Toolbar';
 
     import { AppState } from '~kernel-services/state/store';
@@ -55,6 +57,8 @@ export interface ShellStateProperties {
 
 export interface ShellDispatchProperties {
     dispatchSetLanguage: any;
+    dispatchSetGeneralTheme: any;
+    dispatchSetInteractionTheme: any;
 }
 
 export type ShellProperties =
@@ -78,6 +82,8 @@ const Shell: React.FC<ShellProperties> = (
 
         // #region dispatch
         dispatchSetLanguage,
+        dispatchSetGeneralTheme,
+        dispatchSetInteractionTheme,
         // #endregion dispatch
     } = properties;
     // #endregion properties
@@ -89,6 +95,12 @@ const Shell: React.FC<ShellProperties> = (
         if (language) {
             dispatchSetLanguage(language);
         }
+
+        const theme = getTheme();
+        if (theme) {
+            dispatchSetGeneralTheme(themes[theme]);
+            dispatchSetInteractionTheme(themes[theme]);
+        }
     }, []);
     // #endregion effects
 
@@ -96,6 +108,8 @@ const Shell: React.FC<ShellProperties> = (
     // #region render
     return (
         <>
+            <Head />
+
             <GlobalStyle
                 theme={stateGeneralTheme}
             />
@@ -123,6 +137,16 @@ const mapDispatchToProperties = (
         payload: any,
     ) => dispatch(
         actions.configuration.setLanguage(payload),
+    ),
+    dispatchSetGeneralTheme: (
+        payload: any,
+    ) => dispatch(
+        actions.themes.setGeneralTheme(payload),
+    ),
+    dispatchSetInteractionTheme: (
+        payload: any,
+    ) => dispatch(
+        actions.themes.setInteractionTheme(payload),
     ),
 });
 

@@ -30,8 +30,6 @@
         getSelectedMotor,
     } from '~kernel-services/logic';
 
-    import Head from '~kernel-components/Head';
-
     import MotorSelector from '~kernel-components/MotorSelector';
     import Motor from '~kernel-components/Motor';
 
@@ -117,8 +115,6 @@ const Home: React.FC<HomeProperties> = (
         <StyledHome
             theme={stateGeneralTheme}
         >
-            <Head />
-
             {stateConfigurationMeta &&
                 <StyledBranding>
                     {stateConfigurationMeta.pageTitle && (

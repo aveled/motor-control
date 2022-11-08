@@ -1,5 +1,18 @@
+// #region imports
+    // #region libraries
+    import {
+        THEME_NAMES,
+    } from '@plurid/plurid-themes';
+    // #endregion libraries
+// #endregion imports
+
+
+
 // #region module
 export const SELECT_MOTOR = 'select a motor';
+
+
+export const themeNames = Object.keys(THEME_NAMES).filter(value => value !== 'generated');
 
 
 export const languages = {
@@ -14,6 +27,7 @@ export const languages = {
         motors: 'motors',
         settings: 'settings',
         language: 'language',
+        theme: 'theme',
         token: 'token',
         restart: 'RESTART',
     },
@@ -28,6 +42,7 @@ export const languages = {
         motors: 'moteurs',
         settings: 'réglages',
         language: 'langue',
+        theme: 'thème',
         token: 'jeton',
         restart: 'REDÉMARRER',
     },
@@ -42,6 +57,7 @@ export const languages = {
         motors: 'motoren',
         settings: 'einstellungen',
         language: 'sprache',
+        theme: 'thema',
         token: 'zeichen',
         restart: 'NEU STARTEN',
     },
@@ -56,6 +72,7 @@ export const languages = {
         motors: 'motoare',
         settings: 'setări',
         language: 'limbă',
+        theme: 'temă',
         token: 'jeton',
         restart: 'RESTART',
     },
@@ -70,6 +87,7 @@ export const languages = {
         motors: '马达',
         settings: '设置',
         language: '语',
+        theme: '主题',
         token: '令牌',
         restart: '重新开始',
     },
@@ -84,6 +102,7 @@ export const languages = {
         motors: 'モーター',
         settings: '設定',
         language: '言語',
+        theme: 'テーマ',
         token: 'トークン',
         restart: '再起動',
     },
@@ -98,6 +117,7 @@ export const languages = {
         motors: 'मोटर्स',
         settings: 'समायोजन',
         language: 'भाषा',
+        theme: 'थीम',
         token: 'टोकन',
         restart: 'पुनर्प्रारंभ करें',
     },

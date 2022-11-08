@@ -42,6 +42,13 @@ export const StyledPluridPureButton = styled(PluridPureButton)`
     margin: 0.5rem 0;
     border-radius: 2rem;
 `;
+
+
+export const StyledPluridFormLeftRight = styled(PluridFormLeftRight)`
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    padding: 0 0.8rem;
+`;
 // #endregion module
 
 
