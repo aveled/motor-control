@@ -23,6 +23,11 @@ class ConnectionsManager {
     private connections: Record<string, ModbusRTU> = {};
     private defaultConnection: string | undefined;
 
+    /**
+     * Used in TEST_MODE.
+     */
+    private testCache = {};
+
 
     constructor(
         connections: Record<string, Connection>,
@@ -94,6 +99,7 @@ class ConnectionsManager {
     ) {
         if (TEST_MODE) {
             console.log(`MotorControl writeRegister connectionID ${connectionID || this.defaultConnection}: dataAddress ${dataAddress} :: value ${value}`);
+            this.testCache[dataAddress] = value;
             return;
         }
 
@@ -110,7 +116,7 @@ class ConnectionsManager {
     ) {
         if (TEST_MODE) {
             console.log(`MotorControl readRegister connectionID ${connectionID || this.defaultConnection}: register ${register}`);
-            return;
+            return this.testCache[register];
         }
 
         const connection = this.getConnection(connectionID);

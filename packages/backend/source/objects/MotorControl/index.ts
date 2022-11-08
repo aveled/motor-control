@@ -185,7 +185,7 @@ class MotorControl {
                         motorData.values.stop,
                         motorData.connection,
                     );
-                }, duration);
+                }, duration * 1_000);
             }
         }
 
@@ -211,6 +211,10 @@ class MotorControl {
                         duration,
                     } = request.query as TimedRequestParameters;
 
+                    const durationParsed = typeof duration !== 'undefined'
+                        ? parseInt(duration as any)
+                        : undefined;
+
                     const validRequest = handleToken(token);
                     if (!validRequest) {
                         return;
@@ -231,7 +235,7 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(duration, motorData);
+                    handleDuration(durationParsed, motorData);
                 },
             );
         });
@@ -280,6 +284,10 @@ class MotorControl {
                         duration,
                     } = request.query as TimedRequestParameters;
 
+                    const durationParsed = typeof duration !== 'undefined'
+                        ? parseInt(duration as any)
+                        : undefined;
+
                     const validRequest = handleToken(token);
                     if (!validRequest) {
                         return;
@@ -304,7 +312,7 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(duration, motorData);
+                    handleDuration(durationParsed, motorData);
                 },
             );
         });
@@ -321,6 +329,10 @@ class MotorControl {
                         duration,
                     } = request.query as TimedRequestParameters;
 
+                    const durationParsed = typeof duration !== 'undefined'
+                        ? parseInt(duration as any)
+                        : undefined;
+
                     const validRequest = handleToken(token);
                     if (!validRequest) {
                         return;
@@ -339,7 +351,7 @@ class MotorControl {
                     }
 
                     const direction = motorData.directions && typeof motorData.directions !== 'boolean'
-                        ? motorData.directions.left
+                        ? motorData.directions.left ? motorData.directions.left : 'start'
                         : 'start';
 
                     this.connections.writeRegister(
@@ -349,7 +361,7 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(duration, motorData);
+                    handleDuration(durationParsed, motorData);
                 },
             );
         });
@@ -366,6 +378,10 @@ class MotorControl {
                         duration,
                     } = request.query as TimedRequestParameters;
 
+                    const durationParsed = typeof duration !== 'undefined'
+                        ? parseInt(duration as any)
+                        : undefined;
+
                     const validRequest = handleToken(token);
                     if (!validRequest) {
                         return;
@@ -384,7 +400,7 @@ class MotorControl {
                     }
 
                     const direction = motorData.directions && typeof motorData.directions !== 'boolean'
-                        ? motorData.directions.right
+                        ? motorData.directions.right ? motorData.directions.right : 'reverse'
                         : 'reverse';
 
                     this.connections.writeRegister(
@@ -394,7 +410,7 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(duration, motorData);
+                    handleDuration(durationParsed, motorData);
                 },
             );
         });
@@ -643,19 +659,7 @@ class MotorControl {
             });
         });
 
-        this.app.get('/configuration', (request, response) => {
-            const {
-                token,
-            } = request.query as CommonRequestParameters;
-
-            const validRequest = handleToken(token);
-            if (!validRequest) {
-                response.json({
-                    status: false,
-                });
-                return;
-            }
-
+        this.app.get('/configuration', (_request, response) => {
             const unpackMotors = () => {
                 const motorsData = Object.entries(this.options.motors).map(motor => {
                     const [motorID, motorData] = motor;
