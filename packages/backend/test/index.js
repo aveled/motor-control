@@ -10,7 +10,8 @@ MotorControlBackend({
                 start: 16,
                 stop: 16,
                 reverse: 16,
-                readFrequency: 21,
+                // readFrequency: 21,
+                readFrequency: 16,
                 writeFrequency: 17,
             },
             values: {
@@ -19,7 +20,9 @@ MotorControlBackend({
                 reverse: 6,
                 frequency: 450
             },
-            directions: true,
+            directions: {
+                duration: 5,
+            },
             frequencyRange: {
                 start: 300,
                 end: 900,
