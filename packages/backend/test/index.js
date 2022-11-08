@@ -58,5 +58,6 @@ MotorControlBackend({
         pageTitle: '',
         pageIcon: '',
         theme: '',
+        language: '',
     },
 });
