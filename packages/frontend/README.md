@@ -74,10 +74,13 @@ interface MotorControlOptions {
          */
         pageIcon?: string;
         /**
-         * Plurid Theme name, https://github.com/plurid/plurid-themes#usage
+         * Plurid ThemeName, https://github.com/plurid/plurid-themes#usage
+         *
+         * `'night'`, `'light'`, `'plurid'`, etc.
          */
-        theme?: string;
-        language?: 'english' | 'french' | 'german' | 'romanian' | 'chinese' | 'japanese' | 'hindi';
+        theme?: Exclude<ThemeName, 'generated'>;
+        language?: 'english' | 'french' | 'german' | 'romanian'
+            | 'chinese' | 'japanese' | 'hindi';
     };
 }
 
