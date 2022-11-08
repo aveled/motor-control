@@ -181,10 +181,13 @@ const Settings: React.FC<SettingsProperties> = (
                         setThemeLogic(selection);
                     }
                 }}
-                theme={stateGeneralTheme}
                 width={90}
                 filterable={true}
                 heightItems={5}
+                theme={stateGeneralTheme}
+                style={{
+                    fontSize: '0.9rem',
+                }}
             />
         </StyledPluridFormLeftRight>
     );
@@ -206,9 +209,12 @@ const Settings: React.FC<SettingsProperties> = (
                         setLanguageLogic(selection);
                     }
                 }}
-                theme={stateGeneralTheme}
                 width={90}
                 heightItems={5}
+                theme={stateGeneralTheme}
+                style={{
+                    fontSize: '0.9rem',
+                }}
             />
         </StyledPluridFormLeftRight>
     );
