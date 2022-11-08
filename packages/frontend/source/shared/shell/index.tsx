@@ -41,6 +41,8 @@
     import {
         GlobalStyle,
     } from './styled';
+
+    import './index.css';
     // #endregion internal
 // #endregion imports
 
@@ -56,6 +58,7 @@ export interface ShellStateProperties {
 }
 
 export interface ShellDispatchProperties {
+    dispatchSetGeneralView: typeof actions.views.setGeneralView;
     dispatchSetLanguage: any;
     dispatchSetGeneralTheme: any;
     dispatchSetInteractionTheme: any;
@@ -81,6 +84,7 @@ const Shell: React.FC<ShellProperties> = (
         // #endregion state
 
         // #region dispatch
+        dispatchSetGeneralView,
         dispatchSetLanguage,
         dispatchSetGeneralTheme,
         dispatchSetInteractionTheme,
@@ -91,6 +95,8 @@ const Shell: React.FC<ShellProperties> = (
 
     // #region effects
     useEffect(() => {
+        dispatchSetGeneralView(window.location.pathname);
+
         const language = getLanguage();
         if (language) {
             dispatchSetLanguage(language);
@@ -133,6 +139,11 @@ const mapStateToProperties = (
 const mapDispatchToProperties = (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
 ): ShellDispatchProperties => ({
+    dispatchSetGeneralView: (
+        view,
+    ) => dispatch(
+        actions.views.setGeneralView(view),
+    ),
     dispatchSetLanguage: (
         payload: any,
     ) => dispatch(

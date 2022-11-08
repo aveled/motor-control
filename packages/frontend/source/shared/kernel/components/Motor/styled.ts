@@ -33,7 +33,10 @@ export const StyledLeftRight = styled.div`
     justify-content: center;
 
     @media (max-width: 900px) {
-        width: 300px;
+        width: 240px;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-items: center;
     }
 `;
 

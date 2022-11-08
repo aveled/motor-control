@@ -16,7 +16,7 @@ export interface IStyledHome {
 }
 
 export const StyledHome = styled.div<IStyledHome>`
-    height: 100%;
+    min-height: 100%;
     background-color: ${
         ({
             theme
@@ -25,7 +25,7 @@ export const StyledHome = styled.div<IStyledHome>`
     display: grid;
     place-content: center;
     overflow: scroll;
-    padding: 2rem;
+    padding: 4rem;
 `;
 
 
@@ -35,7 +35,7 @@ export const StyledBranding = styled.div`
     text-align: center;
 
     h1 {
-        margin-top: 4rem;
+        margin-top: 0;
         margin-bottom: 2rem;
     }
 

@@ -34,10 +34,10 @@
 
     import {
         PluridSpinner,
+        PluridDropdown,
         StyledPluridPureButton,
         StyledPluridFormLeftRight,
-        PluridDropdown,
-        PluridInputLine,
+        StyledPluridInputLine,
     } from '~kernel-services/styled';
 
     import {
@@ -220,16 +220,13 @@ const Settings: React.FC<SettingsProperties> = (
     );
 
     const TokenInput = (
-        <PluridInputLine
+        <StyledPluridInputLine
             name={languages[stateConfigurationLanguage].token}
             text={token}
             atChange={(event) => {
                 setToken(event.target.value);
             }}
             theme={stateGeneralTheme}
-            style={{
-                width: '280px',
-            }}
         />
     );
 

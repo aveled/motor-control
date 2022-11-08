@@ -44,7 +44,11 @@ export const GlobalStyle = createGlobalStyle<IGlobalStyle>`
                 theme,
             }: IGlobalStyle) => theme.colorPrimary
         };
-        background: radial-gradient(ellipse at center, hsl(220, 10%, 32%) 0%, hsl(220, 10%, 18%) 100%);
+        background: ${
+            ({
+                theme,
+            }: IGlobalStyle) => theme.backgroundColorPrimary
+        };
     }
 
     a {

@@ -36,13 +36,18 @@ const {
 } = pluridal;
 
 
+export const StyledPluridInputLine = styled(PluridInputLine)`
+    @media (max-width: 900px) {
+        width: 240px;
+    }
+`;
+
 export const StyledPluridPureButton = styled(PluridPureButton)`
     font-size: 1.3rem;
     padding: 1.4rem;
     margin: 0.5rem 0;
     border-radius: 2rem;
 `;
-
 
 export const StyledPluridFormLeftRight = styled(PluridFormLeftRight)`
     margin-bottom: 2rem;
