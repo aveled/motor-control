@@ -164,8 +164,10 @@ MotorControlBackend({
     frontend: {
         title: 'custom title',
         favicon: '',
-        pageTitle: '',
+        pageTitle: 'Custom Title',
         pageIcon: '',
+        theme: 'plurid',
+        language: 'french',
     },
 });
 ```
