@@ -208,6 +208,7 @@ const Settings: React.FC<SettingsProperties> = (
                 }}
                 theme={stateGeneralTheme}
                 width={90}
+                heightItems={5}
             />
         </StyledPluridFormLeftRight>
     );
