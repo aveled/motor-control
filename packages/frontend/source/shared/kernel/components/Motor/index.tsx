@@ -117,6 +117,10 @@ const Motor: React.FC<MotorProperties> = (
             ? '' : selectedMotor;
 
     const motor = stateConfigurationMotors[motorID];
+
+    const duration = motor && motor.directions && typeof motor.directions !== 'boolean'
+        ? motor.directions.duration
+        : undefined
     // #endregion properties
 
 
@@ -344,7 +348,7 @@ const Motor: React.FC<MotorProperties> = (
                 text={`ᐊ ${languages[stateConfigurationLanguage].left}`}
                 atClick={() => {
                     setShortStateChange(true);
-                    spinLeft(stateConfigurationEndpoint);
+                    spinLeft(stateConfigurationEndpoint, duration);
                 }}
                 theme={stateGeneralTheme}
             />
@@ -353,7 +357,7 @@ const Motor: React.FC<MotorProperties> = (
                 text={`${languages[stateConfigurationLanguage].right} ᐅ`}
                 atClick={() => {
                     setShortStateChange(true);
-                    spinRight(stateConfigurationEndpoint);
+                    spinRight(stateConfigurationEndpoint, duration);
                 }}
                 theme={stateGeneralTheme}
             />

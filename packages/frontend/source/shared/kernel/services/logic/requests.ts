@@ -17,11 +17,16 @@
 export const composeServerEndpoint = (
     endpoint: string,
     path: string,
+    query?: string,
 ) => {
     const token = getToken();
-    const tokenQuery = token ? `?token=${token}` : '';
+    const tokenQuery = token ? `token=${token}` : '';
+    const queryText = query || '';
 
-    return endpoint + path + tokenQuery;
+    const querySign = tokenQuery || query ? '?' : '';
+    const queryAnd = token && query ? '&' : '';
+
+    return endpoint + path + querySign + tokenQuery + queryAnd + queryText;
 }
 
 
@@ -77,9 +82,14 @@ export const reverseMotor = (
 
 export const spinLeft = (
     serverEndpoint: string,
+    duration?: number,
 ) => {
     try {
-        fetch(composeServerEndpoint(serverEndpoint, '/left'), {
+        fetch(composeServerEndpoint(
+            serverEndpoint,
+            '/left',
+            typeof duration === 'number' ? `duration=${duration}` : '',
+        ), {
             method: 'POST',
         });
     } catch (error) {
@@ -90,9 +100,14 @@ export const spinLeft = (
 
 export const spinRight = (
     serverEndpoint: string,
+    duration?: number,
 ) => {
     try {
-        fetch(composeServerEndpoint(serverEndpoint, '/right'), {
+        fetch(composeServerEndpoint(
+            serverEndpoint,
+            '/right',
+            typeof duration === 'number' ? `duration=${duration}` : '',
+        ), {
             method: 'POST',
         });
     } catch (error) {
