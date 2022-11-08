@@ -1,3 +1,13 @@
+// #region imports
+    // #region libraries
+    import {
+        ThemeName,
+    } from '@plurid/plurid-themes';
+    // #endregion libraries
+// #endregion imports
+
+
+
 // #region module
 export interface CommonRequestParameters {
     token?: string;
@@ -89,10 +99,13 @@ export interface MotorControlOptions<C = Record<string, Connection>> {
          */
         pageIcon?: string;
         /**
-         * Plurid Theme name, https://github.com/plurid/plurid-themes#usage
+         * Plurid ThemeName, https://github.com/plurid/plurid-themes#usage
+         *
+         * `'night'`, `'light'`, `'plurid'`, etc.
          */
-        theme?: string;
-        language?: 'english' | 'french' | 'german' | 'romanian' | 'chinese' | 'japanese' | 'hindi';
+        theme?: Exclude<ThemeName, 'generated'>;
+        language?: 'english' | 'french' | 'german' | 'romanian'
+            | 'chinese' | 'japanese' | 'hindi';
     };
 }
 // #endregion module
