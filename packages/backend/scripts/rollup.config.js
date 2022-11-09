@@ -27,6 +27,7 @@ const build = {
         },
     ],
     external: [
+        '@plurid/plurid-themes',
         'body-parser',
         'cors',
         'express',
