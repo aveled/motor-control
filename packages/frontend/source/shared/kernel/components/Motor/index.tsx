@@ -44,6 +44,8 @@
         spinLeft,
         spinRight,
         setFrequency,
+
+        createEventSource,
     } from '~kernel-services/logic';
 
     import {
@@ -213,6 +215,33 @@ const Motor: React.FC<MotorProperties> = (
             setFrequencySliderWidth(220);
         }
     }, []);
+
+    // useEffect(() => {
+    //     if (!motor) {
+    //         return;
+    //     }
+
+    //     const eventSource = createEventSource(stateConfigurationEndpoint);
+
+    //     const handleEvent = (
+    //         event: MessageEvent,
+    //     ) => {
+    //         const data = JSON.parse(event.data);
+    //         if (data.motorID !== motorID) {
+    //             return;
+    //         }
+
+    //         setSpinning(data.running);
+    //     }
+
+    //     eventSource.addEventListener('message', handleEvent);
+
+    //     return () => {
+    //         eventSource.removeEventListener('message', handleEvent);
+    //     }
+    // }, [
+    //     motor,
+    // ]);
 
     // useEffect(() => {
     //     let timeout: NodeJS.Timeout | undefined;
