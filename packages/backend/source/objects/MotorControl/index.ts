@@ -51,6 +51,8 @@ class MotorControl {
     private motorFrequencies: Record<string, number> = {};
     private motorState: Record<string, string> = {};
 
+    private eventSubscribers: Record<string, express.Response> = {};
+
 
     constructor(
         options: MotorControlOptions,
@@ -75,7 +77,14 @@ class MotorControl {
     }
 
     private setup() {
-        this.app.use(cors());
+        this.app.use(
+            cors({
+                credentials: true,
+                origin: (_: any, callback: any) => {
+                    return callback(null, true);
+                },
+            }),
+        );
         this.app.use(json());
 
 
@@ -176,6 +185,7 @@ class MotorControl {
 
         const handleDuration = (
             duration: number | undefined,
+            motorID: string,
             motorData: Motor,
         ) => {
             if (typeof duration === 'number' && duration) {
@@ -185,6 +195,11 @@ class MotorControl {
                         motorData.values.stop,
                         motorData.connection,
                     );
+
+                    sendEvent({
+                        type: 'stop',
+                        motorID,
+                    });
                 }, duration * 1_000);
             }
         }
@@ -196,6 +211,19 @@ class MotorControl {
             const frequency = rpm * motorData.poles / (2 * 60);
 
             return frequency;
+        }
+
+        const sendEvent = (
+            data: Record<string, any>,
+        ) => {
+            const eventString = JSON.stringify(data).replace(/\n/g, '\\n');
+
+            for (const response of Object.values(this.eventSubscribers)) {
+                const sseID = Math.random() + '';
+
+                response.write('id: ' + sseID + '\n', 'utf-8');
+                response.write('data: ' + eventString + '\n\n', 'utf-8');
+            }
         }
 
 
@@ -231,7 +259,12 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(duration, motorData);
+                    handleDuration(duration, motorID, motorData);
+
+                    sendEvent({
+                        type: 'start',
+                        motorID,
+                    });
                 },
             );
         });
@@ -253,6 +286,7 @@ class MotorControl {
                     }
 
                     const {
+                        motorID,
                         motorData,
                     } = this.getMotor(motor);
                     if (!motorData) {
@@ -264,6 +298,11 @@ class MotorControl {
                         motorData.values.stop,
                         motorData.connection,
                     );
+
+                    sendEvent({
+                        type: 'stop',
+                        motorID,
+                    });
                 },
             );
         });
@@ -304,7 +343,12 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(duration, motorData);
+                    handleDuration(duration, motorID, motorData);
+
+                    sendEvent({
+                        type: 'start',
+                        motorID,
+                    });
                 },
             );
         });
@@ -349,7 +393,12 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(duration, motorData);
+                    handleDuration(duration, motorID, motorData);
+
+                    sendEvent({
+                        type: 'start',
+                        motorID,
+                    });
                 },
             );
         });
@@ -394,7 +443,12 @@ class MotorControl {
                     );
 
                     handleFrequency(motorID, motorData);
-                    handleDuration(duration, motorData);
+                    handleDuration(duration, motorID, motorData);
+
+                    sendEvent({
+                        type: 'start',
+                        motorID,
+                    });
                 },
             );
         });
@@ -737,6 +791,37 @@ class MotorControl {
                 status: true,
                 meta,
                 motors,
+            });
+        });
+
+        this.app.get('/events', (request, response) => {
+            const {
+                token,
+            } = request.query as CommonRequestParameters;
+
+            const validRequest = handleToken(token);
+            if (!validRequest) {
+                response.json({
+                    status: false,
+                });
+                return;
+            }
+
+            response.setHeader('Cache-Control', 'no-cache');
+            response.setHeader('Content-Type', 'text/event-stream');
+            response.setHeader('Connection', 'keep-alive');
+
+            // flush the headers to establish SSE with client
+            response.flushHeaders();
+
+            const subscriberID = Math.random() + '';
+            this.eventSubscribers[subscriberID] = response;
+
+            response.on('close', () => {
+                // client dropped connection
+                response.end();
+
+                delete this.eventSubscribers[subscriberID];
             });
         });
 
