@@ -216,32 +216,37 @@ const Motor: React.FC<MotorProperties> = (
         }
     }, []);
 
-    // useEffect(() => {
-    //     if (!motor) {
-    //         return;
-    //     }
+    useEffect(() => {
+        if (!motor) {
+            return;
+        }
 
-    //     const eventSource = createEventSource(stateConfigurationEndpoint);
+        const eventSource = createEventSource(stateConfigurationEndpoint);
 
-    //     const handleEvent = (
-    //         event: MessageEvent,
-    //     ) => {
-    //         const data = JSON.parse(event.data);
-    //         if (data.motorID !== motorID) {
-    //             return;
-    //         }
+        const handleEvent = (
+            event: MessageEvent,
+        ) => {
+            const data = JSON.parse(event.data);
+            if (data.motorID !== motorID) {
+                return;
+            }
 
-    //         setSpinning(data.running);
-    //     }
+            switch (data.type) {
+                case 'start':
+                    setSpinning(true);
+                case 'stop':
+                    setSpinning(false);
+            }
+        }
 
-    //     eventSource.addEventListener('message', handleEvent);
+        eventSource.addEventListener('message', handleEvent);
 
-    //     return () => {
-    //         eventSource.removeEventListener('message', handleEvent);
-    //     }
-    // }, [
-    //     motor,
-    // ]);
+        return () => {
+            eventSource.removeEventListener('message', handleEvent);
+        }
+    }, [
+        motor,
+    ]);
 
     // useEffect(() => {
     //     let timeout: NodeJS.Timeout | undefined;
