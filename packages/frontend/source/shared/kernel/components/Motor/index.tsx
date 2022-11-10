@@ -200,14 +200,14 @@ const Motor: React.FC<MotorProperties> = (
     useEffect(() => {
         load();
 
-        // const interval = setInterval(
-        //     load,
-        //     5_000,
-        // );
+        const interval = setInterval(
+            load,
+            10_000,
+        );
 
-        // return () => {
-        //     clearInterval(interval);
-        // }
+        return () => {
+            clearInterval(interval);
+        }
     }, []);
 
     useEffect(() => {
