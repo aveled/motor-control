@@ -200,14 +200,14 @@ const Motor: React.FC<MotorProperties> = (
     useEffect(() => {
         load();
 
-        const interval = setInterval(
-            load,
-            5_000,
-        );
+        // const interval = setInterval(
+        //     load,
+        //     5_000,
+        // );
 
-        return () => {
-            clearInterval(interval);
-        }
+        // return () => {
+        //     clearInterval(interval);
+        // }
     }, []);
 
     useEffect(() => {
@@ -234,8 +234,10 @@ const Motor: React.FC<MotorProperties> = (
             switch (data.type) {
                 case 'start':
                     setSpinning(true);
+                    break;
                 case 'stop':
                     setSpinning(false);
+                    break;
             }
         }
 
@@ -245,6 +247,7 @@ const Motor: React.FC<MotorProperties> = (
             eventSource.removeEventListener('message', handleEvent);
         }
     }, [
+        motorID,
         motor,
     ]);
 
