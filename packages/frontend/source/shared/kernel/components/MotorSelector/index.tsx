@@ -21,7 +21,12 @@
 
     import {
         SELECT_MOTOR,
+        languages,
     } from '~kernel-data/constants';
+
+    import {
+        Language,
+    } from '~kernel-data/interfaces';
 
     import {
         PluridDropdown,
@@ -58,6 +63,7 @@ export interface MotorSelectorStateProperties {
     stateGeneralTheme: Theme;
     stateInteractionTheme: Theme;
     stateConfigurationMotors: MotorisMergedConfiguration['motors'];
+    stateConfigurationLanguage: Language;
 }
 
 export interface MotorSelectorDispatchProperties {
@@ -83,11 +89,29 @@ const MotorSelector: React.FC<MotorSelectorProperties> = (
         stateGeneralTheme,
         // stateInteractionTheme,
         stateConfigurationMotors,
+        stateConfigurationLanguage,
         // #endregion state
     } = properties;
 
     const motors = Object.entries(stateConfigurationMotors);
     // #endregion properties
+
+
+    // #region handlers
+    const isSelectedMotor = () => {
+        if (selectedMotor === SELECT_MOTOR) {
+            return true;
+        }
+
+        if (stateConfigurationLanguage) {
+            if (selectedMotor === languages[stateConfigurationLanguage].selectMotor) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    // #endregion handlers
 
 
     // #region render
@@ -99,9 +123,7 @@ const MotorSelector: React.FC<MotorSelectorProperties> = (
         <StyledMotorSelector
             theme={stateGeneralTheme}
             style={{
-                marginBottom: selectedMotor === SELECT_MOTOR
-                    ? '0'
-                    : '4rem',
+                marginBottom: isSelectedMotor() ? '0' : '4rem',
             }}
         >
             <StyledMotorSign
@@ -142,6 +164,7 @@ const mapStateToProperties = (
     stateGeneralTheme: selectors.themes.getGeneralTheme(state),
     stateInteractionTheme: selectors.themes.getInteractionTheme(state),
     stateConfigurationMotors: selectors.configuration.getConfiguration(state).motors,
+    stateConfigurationLanguage: selectors.configuration.getConfiguration(state).meta?.language || 'english',
 });
 
 

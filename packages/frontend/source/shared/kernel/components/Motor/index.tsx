@@ -113,10 +113,24 @@ const Motor: React.FC<MotorProperties> = (
         // #endregion state
     } = properties;
 
-    const motorID = Object.keys(stateConfigurationMotors).length === 1
-        ? Object.keys(stateConfigurationMotors)[0]
-        : selectedMotor === SELECT_MOTOR
-            ? '' : selectedMotor;
+    const resolveMotorID = () => {
+        if (Object.keys(stateConfigurationMotors).length === 1) {
+            return Object.keys(stateConfigurationMotors)[0];
+        }
+
+        if (stateConfigurationLanguage) {
+            if (selectedMotor === languages[stateConfigurationLanguage].selectMotor) {
+                return '';
+            }
+        }
+
+        if (selectedMotor === SELECT_MOTOR) {
+            return '';
+        }
+
+        return selectedMotor;
+    }
+    const motorID = resolveMotorID();
 
     const motor = stateConfigurationMotors[motorID];
 
@@ -139,20 +153,10 @@ const Motor: React.FC<MotorProperties> = (
     const [
         speed,
         setSpeed,
-    ] = useState(1);
+    ] = useState(0);
     const [
-        spinning,
-        setSpinning,
-    ] = useState(false);
-
-    const [
-        stateChange,
-        setStateChange,
-    ] = useState(false);
-
-    const [
-        shortStateChange,
-        setShortStateChange,
+        running,
+        setRunning,
     ] = useState(false);
 
     const [
@@ -168,8 +172,6 @@ const Motor: React.FC<MotorProperties> = (
             if (!motor.frequencyRange) {
                 return;
             }
-
-            setShortStateChange(true);
 
             const frequency = motor.frequencyRange[value];
             setFrequency(stateConfigurationEndpoint, frequency);
@@ -188,9 +190,17 @@ const Motor: React.FC<MotorProperties> = (
         }
 
         if (state.running) {
-            setSpinning(true);
+            setRunning(true);
         } else {
-            setSpinning(false);
+            setRunning(false);
+        }
+
+        if (typeof state.speed === 'number' && !isNaN(state.speed)) {
+            setSpeed(state.speed);
+        }
+
+        if (state.direction === 'left' || state.direction === 'right') {
+            setSpinDirection(state.direction);
         }
     }
     // #endregion handlers
@@ -233,10 +243,10 @@ const Motor: React.FC<MotorProperties> = (
 
             switch (data.type) {
                 case 'start':
-                    setSpinning(true);
+                    setRunning(true);
                     break;
                 case 'stop':
-                    setSpinning(false);
+                    setRunning(false);
                     break;
             }
         }
@@ -250,42 +260,6 @@ const Motor: React.FC<MotorProperties> = (
         motorID,
         motor,
     ]);
-
-    // useEffect(() => {
-    //     let timeout: NodeJS.Timeout | undefined;
-
-    //     if (stateChange) {
-    //         timeout = setTimeout(() => {
-    //             setStateChange(false);
-    //         }, 6_000);
-    //     }
-
-    //     return () => {
-    //         if (timeout) {
-    //             clearTimeout(timeout);
-    //         }
-    //     }
-    // }, [
-    //     stateChange,
-    // ]);
-
-    // useEffect(() => {
-    //     let timeout: NodeJS.Timeout | undefined;
-
-    //     if (shortStateChange) {
-    //         timeout = setTimeout(() => {
-    //             setShortStateChange(false);
-    //         }, 3_000);
-    //     }
-
-    //     return () => {
-    //         if (timeout) {
-    //             clearTimeout(timeout);
-    //         }
-    //     }
-    // }, [
-    //     shortStateChange,
-    // ]);
     // #endregion effects
 
 
@@ -309,26 +283,6 @@ const Motor: React.FC<MotorProperties> = (
         );
     }
 
-    // if (stateChange || shortStateChange) {
-    //     return (
-    //         <StyledHome>
-    //             <Head />
-
-    //             <PluridSpinner
-    //                 theme={stateGeneralTheme}
-    //             />
-
-    //             <StyledText
-    //                 style={{
-    //                     marginTop: '8rem',
-    //                 }}
-    //             >
-    //                 changing state
-    //             </StyledText>
-    //         </StyledHome>
-    //     );
-    // }
-
     const MotorStart = (
         <StyledPluridPureButton
             text={languages[stateConfigurationLanguage].start}
@@ -336,8 +290,7 @@ const Motor: React.FC<MotorProperties> = (
                 startMotor(stateConfigurationEndpoint);
                 load();
 
-                setSpinning(true);
-                setStateChange(true);
+                setRunning(true);
             }}
             theme={stateGeneralTheme}
         />
@@ -350,8 +303,7 @@ const Motor: React.FC<MotorProperties> = (
                 stopMotor(stateConfigurationEndpoint);
                 load();
 
-                setSpinning(false);
-                setStateChange(true);
+                setRunning(false);
             }}
             theme={stateGeneralTheme}
             style={{
@@ -372,8 +324,6 @@ const Motor: React.FC<MotorProperties> = (
                 } else {
                     setSpinDirection('left');
                 }
-
-                setStateChange(true);
             }}
             theme={stateGeneralTheme}
         />
@@ -384,7 +334,6 @@ const Motor: React.FC<MotorProperties> = (
             <StyledPluridPureButton
                 text={`ᐊ ${languages[stateConfigurationLanguage].left}`}
                 atClick={() => {
-                    setShortStateChange(true);
                     spinLeft(stateConfigurationEndpoint, duration);
                 }}
                 theme={stateGeneralTheme}
@@ -393,7 +342,6 @@ const Motor: React.FC<MotorProperties> = (
             <StyledPluridPureButton
                 text={`${languages[stateConfigurationLanguage].right} ᐅ`}
                 atClick={() => {
-                    setShortStateChange(true);
                     spinRight(stateConfigurationEndpoint, duration);
                 }}
                 theme={stateGeneralTheme}
@@ -430,7 +378,7 @@ const Motor: React.FC<MotorProperties> = (
         <StyledMotor
             theme={stateGeneralTheme}
         >
-            {spinning ? (
+            {running ? (
                 <StyledControls>
                     {MotorStop}
                 </StyledControls>
