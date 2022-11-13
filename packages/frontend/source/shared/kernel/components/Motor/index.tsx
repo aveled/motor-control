@@ -335,6 +335,7 @@ const Motor: React.FC<MotorProperties> = (
                 text={`ᐊ ${languages[stateConfigurationLanguage].left}`}
                 atClick={() => {
                     spinLeft(stateConfigurationEndpoint, duration);
+                    setRunning(true);
                 }}
                 theme={stateGeneralTheme}
             />
@@ -343,6 +344,7 @@ const Motor: React.FC<MotorProperties> = (
                 text={`${languages[stateConfigurationLanguage].right} ᐅ`}
                 atClick={() => {
                     spinRight(stateConfigurationEndpoint, duration);
+                    setRunning(true);
                 }}
                 theme={stateGeneralTheme}
             />
