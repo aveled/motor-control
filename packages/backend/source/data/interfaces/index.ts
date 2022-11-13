@@ -29,11 +29,13 @@ export type MotorError =
 
 
 export interface ResponseStatus {
-    error: MotorError;
-    running: boolean;
-    frequency: number;
-    rpm: number;
-    direction: 'left' | 'right' | 'unknown';
+    status: boolean;
+    error?: MotorError;
+    running?: boolean;
+    frequency?: number;
+    rpm?: number;
+    speed?: number;
+    direction?: 'left' | 'right' | 'unknown';
 }
 
 

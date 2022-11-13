@@ -27,6 +27,7 @@
         CommonRequestParameters,
         TimedRequestParameters,
         Motor,
+        ResponseStatus,
     } from '~data/interfaces';
 
     import {
@@ -92,6 +93,94 @@ class MotorControl {
             if (typeof motorData.values.frequency === 'number') {
                 this.motorFrequencies[motorID] = motorData.values.frequency;
             }
+        }
+
+
+        const unpackMotors = () => {
+            const motorsData = Object.entries(this.options.motors).map(motor => {
+                const [motorID, motorData] = motor;
+
+                const {
+                    frequencyRange: frequencyRangeData,
+                    registers,
+                } = motorData;
+
+                const {
+                    reverse,
+                    readFrequency,
+                    writeFrequency,
+                } = registers;
+
+                function range(
+                    start: number,
+                    end: number,
+                    step = 1,
+                ) {
+                    const length = Math.floor((end - start) / step) + 1;
+                    return Array(length).fill(0).map((_, index) => start + (index * step))
+                }
+                const frequencyRange = frequencyRangeData
+                    ? range(frequencyRangeData.start, frequencyRangeData.end, frequencyRangeData.step)
+                    : undefined;
+
+                return {
+                    id: motorID,
+                    reverse: typeof reverse === 'number',
+                    frequency: typeof writeFrequency === 'number' && typeof readFrequency === 'number',
+                    frequencyRange,
+                    directions: !motorData.directions
+                        ? false
+                        : typeof motorData.directions === 'boolean'
+                            ? motorData.directions
+                            : {
+                                duration: motorData.directions.duration || 5,
+                            },
+                };
+            });
+
+            const motors: Record<string, any> = {};
+            for (const motor of motorsData) {
+                const {
+                    id,
+                    reverse,
+                    frequency,
+                    frequencyRange,
+                    directions,
+                } = motor;
+
+                motors[id] = {
+                    reverse,
+                    frequency,
+                    frequencyRange,
+                    directions,
+                };
+            }
+
+            return motors;
+        }
+
+        const unpackMeta = () => {
+            if (!this.options.frontend) {
+                return;
+            }
+
+            const {
+                title,
+                favicon,
+                pageTitle,
+                pageIcon,
+                theme,
+                language,
+            } = this.options.frontend;
+
+            return {
+                title,
+                favicon,
+                pageTitle,
+                pageIcon,
+                theme,
+                language,
+            };
         }
 
 
@@ -211,6 +300,37 @@ class MotorControl {
             const frequency = rpm * motorData.poles / (2 * 60);
 
             return frequency;
+        }
+
+        const frequencyToRPM = (
+            frequency: number | undefined,
+            motorData: Motor,
+        ) => {
+            if (typeof frequency !== 'number') {
+                return;
+            }
+
+            const rpm = frequency * 60 * 2 / motorData.poles;
+
+            return rpm;
+        }
+
+        const speedFromFrequency = (
+            frequency: number | undefined,
+            motorID: string,
+        ) => {
+            const motors = unpackMotors();
+            const motor = motors[motorID];
+            if (!motor) {
+                return;
+            }
+
+            if (!Array.isArray(motor.frequencyRange)) {
+                return;
+            }
+
+            const speed = motor.frequencyRange.indexOf(frequency);
+            return speed;
         }
 
         const sendEvent = (
@@ -661,12 +781,19 @@ class MotorControl {
 
             const frequency = await getFrequency();
             const running = typeof frequency === 'number' ? frequency > 0 : false;
+            const rpm = frequencyToRPM(frequency, motorData);
+            const speed = speedFromFrequency(frequency, motorID);
+            const direction = 'unknown';
 
             response.json({
                 status: true,
+                error: 0,
                 running,
                 frequency,
-            });
+                rpm,
+                speed,
+                direction,
+            } as ResponseStatus);
         });
 
         this.app.post('/restart', (request, response) => {
@@ -698,93 +825,7 @@ class MotorControl {
         });
 
         this.app.get('/configuration', (_request, response) => {
-            const unpackMotors = () => {
-                const motorsData = Object.entries(this.options.motors).map(motor => {
-                    const [motorID, motorData] = motor;
-
-                    const {
-                        frequencyRange: frequencyRangeData,
-                        registers,
-                    } = motorData;
-
-                    const {
-                        reverse,
-                        readFrequency,
-                        writeFrequency,
-                    } = registers;
-
-                    function range(
-                        start: number,
-                        end: number,
-                        step = 1,
-                    ) {
-                        const length = Math.floor((end - start) / step) + 1;
-                        return Array(length).fill(0).map((_, index) => start + (index * step))
-                    }
-                    const frequencyRange = frequencyRangeData
-                        ? range(frequencyRangeData.start, frequencyRangeData.end, frequencyRangeData.step)
-                        : undefined;
-
-                    return {
-                        id: motorID,
-                        reverse: typeof reverse === 'number',
-                        frequency: typeof writeFrequency === 'number' && typeof readFrequency === 'number',
-                        frequencyRange,
-                        directions: !motorData.directions
-                            ? false
-                            : typeof motorData.directions === 'boolean'
-                                ? motorData.directions
-                                : {
-                                    duration: motorData.directions.duration || 5,
-                                },
-                    };
-                });
-
-                const motors: Record<string, any> = {};
-                for (const motor of motorsData) {
-                    const {
-                        id,
-                        reverse,
-                        frequency,
-                        frequencyRange,
-                        directions,
-                    } = motor;
-
-                    motors[id] = {
-                        reverse,
-                        frequency,
-                        frequencyRange,
-                        directions,
-                    };
-                }
-
-                return motors;
-            }
             const motors = unpackMotors();
-
-            const unpackMeta = () => {
-                if (!this.options.frontend) {
-                    return;
-                }
-
-                const {
-                    title,
-                    favicon,
-                    pageTitle,
-                    pageIcon,
-                    theme,
-                    language,
-                } = this.options.frontend;
-
-                return {
-                    title,
-                    favicon,
-                    pageTitle,
-                    pageIcon,
-                    theme,
-                    language,
-                };
-            }
             const meta = unpackMeta();
 
             response.json({
