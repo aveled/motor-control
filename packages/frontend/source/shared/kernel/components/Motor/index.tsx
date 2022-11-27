@@ -147,6 +147,11 @@ const Motor: React.FC<MotorProperties> = (
     ] = useState(true);
 
     const [
+        error,
+        setError,
+    ] = useState(false);
+
+    const [
         spinDirection,
         setSpinDirection,
     ] = useState('left');
@@ -186,7 +191,10 @@ const Motor: React.FC<MotorProperties> = (
         }, 300);
 
         if (!state) {
+            setError(true);
             return;
+        } else {
+            setError(false);
         }
 
         if (state.running) {
@@ -264,7 +272,7 @@ const Motor: React.FC<MotorProperties> = (
 
 
     // #region render
-    if (!motor) {
+    if (!motor && !error) {
         return (<></>);
     }
 
@@ -279,6 +287,16 @@ const Motor: React.FC<MotorProperties> = (
                         top: '53%',
                     }}
                 />
+            </StyledMotor>
+        );
+    }
+
+    if (error) {
+        return (
+            <StyledMotor
+                theme={stateGeneralTheme}
+            >
+                something went wrong
             </StyledMotor>
         );
     }
